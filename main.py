@@ -3,6 +3,7 @@
 import json
 import os
 import random
+from datetime import datetime
 
 LINE = "=" * 40
 THIN_LINE = "-" * 40
@@ -248,7 +249,38 @@ class QuizGame:
         print(f"🏆 결과: {total}문제 중 {correct}문제 정답! ({score}점)")
         if hint_count > 0:
             print(f"   └ 힌트 {hint_count}회 사용 → {hint_count * HINT_PENALTY}점 차감")
+        if self.record_result(total, correct, score):
+            print("🎉 새로운 최고 점수입니다!")
         print(LINE)
+
+    def record_result(self, total, correct, score):
+        """게임 기록을 남기고 최고 점수를 갱신한다. 최고 점수를 새로 썼으면 True."""
+        self.history.append({
+            "date": datetime.now().strftime("%Y-%m-%d %H:%M"),
+            "total": total,
+            "correct": correct,
+            "score": score,
+        })
+
+        is_best = score > self.best_score
+        if is_best:
+            self.best_score = score
+        self.save_state()
+        return is_best
+
+    def show_score(self):
+        """최고 점수와 지금까지의 게임 기록을 보여준다."""
+        if not self.history:
+            print("\n⚠️ 아직 퀴즈를 풀지 않았습니다. 먼저 퀴즈를 풀어 보세요.")
+            return
+
+        print(f"\n🏆 최고 점수: {self.best_score}점")
+        print(f"\n📜 최근 기록 (전체 {len(self.history)}회)")
+        print(THIN_LINE)
+        for record in self.history[-5:]:
+            print(f"{record['date']} | {record['total']}문제 중 "
+                  f"{record['correct']}문제 정답 | {record['score']}점")
+        print(THIN_LINE)
 
     def input_int(self, prompt, low, high):
         """low~high 범위의 정수를 입력받는다. 올바른 값이 들어올 때까지 반복한다."""
@@ -285,6 +317,8 @@ class QuizGame:
                 self.list_quizzes()
             elif choice == 4:
                 self.delete_quiz()
+            elif choice == 5:
+                self.show_score()
             elif choice == 6:
                 print("\n👋 게임을 종료합니다. 안녕히 가세요!")
                 break
