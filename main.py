@@ -2,9 +2,13 @@
 
 import json
 import os
+import random
 
 LINE = "=" * 40
 THIN_LINE = "-" * 40
+
+HINT_CHOICE = 5    # 정답 입력창에서 힌트를 요청하는 번호
+HINT_PENALTY = 5   # 힌트를 1회 사용할 때 차감되는 점수
 
 # 데이터 파일은 프로젝트 루트(main.py와 같은 위치)의 state.json으로 고정한다.
 STATE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "state.json")
@@ -145,29 +149,56 @@ class QuizGame:
         except OSError as error:
             print(f"⚠️ 저장에 실패했습니다. ({error})")
 
+    def ask_one(self, quiz, number):
+        """문제 하나를 출제한다. (정답 여부, 힌트 사용 여부)를 돌려준다."""
+        quiz.display(number)
+        hint_used = False
+
+        while True:
+            selected = self.input_int("정답 입력 (1-4, 힌트 보기는 5): ", 1, 5)
+            if selected != HINT_CHOICE:
+                break
+            if not quiz.hint:
+                print("💡 이 문제에는 힌트가 없습니다.")
+            else:
+                print(f"💡 힌트: {quiz.hint} (힌트 사용 시 {HINT_PENALTY}점 차감)")
+                hint_used = True
+
+        if quiz.check(selected):
+            print("✅ 정답입니다!\n")
+            return True, hint_used
+
+        answer_text = quiz.choices[quiz.answer - 1]
+        print(f"❌ 오답입니다! 정답은 {quiz.answer}번 ({answer_text})\n")
+        return False, hint_used
+
     def play_quiz(self):
-        """저장된 퀴즈를 순서대로 출제하고 결과를 보여준다."""
+        """퀴즈를 랜덤 순서로 출제하고 결과를 보여준다."""
         if not self.quizzes:
             print("\n⚠️ 등록된 퀴즈가 없습니다. 먼저 퀴즈를 추가해 주세요.")
             return
 
-        total = len(self.quizzes)
+        available = len(self.quizzes)
+        print(f"\n📝 등록된 퀴즈는 총 {available}문제입니다.")
+        total = self.input_int(f"몇 문제를 푸시겠습니까? (1-{available}): ", 1, available)
+
+        selected_quizzes = random.sample(self.quizzes, total)
         print(f"\n📝 퀴즈를 시작합니다! (총 {total}문제)\n")
 
         correct = 0
-        for number, quiz in enumerate(self.quizzes, start=1):
-            quiz.display(number)
-            selected = self.input_int("정답 입력 (1-4): ", 1, 4)
-            if quiz.check(selected):
-                print("✅ 정답입니다!\n")
+        hint_count = 0
+        for number, quiz in enumerate(selected_quizzes, start=1):
+            is_correct, hint_used = self.ask_one(quiz, number)
+            if is_correct:
                 correct += 1
-            else:
-                answer_text = quiz.choices[quiz.answer - 1]
-                print(f"❌ 오답입니다! 정답은 {quiz.answer}번 ({answer_text})\n")
+            if hint_used:
+                hint_count += 1
 
-        score = round(correct / total * 100)
+        score = max(0, round(correct / total * 100) - hint_count * HINT_PENALTY)
         print(LINE)
         print(f"🏆 결과: {total}문제 중 {correct}문제 정답! ({score}점)")
+        if hint_count > 0:
+            print(f"   └ 힌트 {hint_count}회 사용 → {hint_count * HINT_PENALTY}점 차감")
         print(LINE)
 
     def input_int(self, prompt, low, high):
