@@ -184,6 +184,20 @@ class QuizGame:
             print(f"[{number}] {quiz.question}")
         print(THIN_LINE)
 
+    def delete_quiz(self):
+        """번호를 입력받아 해당 퀴즈를 목록에서 지우고 파일에 반영한다."""
+        if not self.quizzes:
+            print("\n⚠️ 삭제할 퀴즈가 없습니다.")
+            return
+
+        self.list_quizzes()
+        number = self.input_int(
+            f"삭제할 퀴즈 번호 (1-{len(self.quizzes)}): ", 1, len(self.quizzes)
+        )
+        removed = self.quizzes.pop(number - 1)
+        self.save_state()
+        print(f"\n🗑️ 삭제되었습니다: {removed.question}")
+
     def ask_one(self, quiz, number):
         """문제 하나를 출제한다. (정답 여부, 힌트 사용 여부)를 돌려준다."""
         quiz.display(number)
@@ -269,6 +283,8 @@ class QuizGame:
                 self.add_quiz()
             elif choice == 3:
                 self.list_quizzes()
+            elif choice == 4:
+                self.delete_quiz()
             elif choice == 6:
                 print("\n👋 게임을 종료합니다. 안녕히 가세요!")
                 break
