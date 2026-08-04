@@ -330,7 +330,12 @@ def main():
     """프로그램 진입점."""
     game = QuizGame()
     game.load_state()
-    game.run()
+    try:
+        game.run()
+    except (KeyboardInterrupt, EOFError):
+        # Ctrl+C 또는 입력 스트림 종료로 중단되어도 비정상 종료하지 않는다.
+        print("\n\n⚠️ 입력이 중단되었습니다. 저장 후 안전하게 종료합니다.")
+        game.save_state()
 
 
 if __name__ == "__main__":
