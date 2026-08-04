@@ -127,3 +127,7 @@ python3 main.py
 - `docs/screenshots/play.png` — 퀴즈 풀기
 - `docs/screenshots/add_quiz.png` — 퀴즈 추가
 - `docs/screenshots/score.png` — 점수 확인
+
+---
+
+> 이 저장소는 clone → commit → push → pull 실습을 거쳐 동기화되었습니다.
