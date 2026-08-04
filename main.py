@@ -25,19 +25,38 @@ class QuizGame:
         print("6. 종료")
         print(LINE)
 
+    def input_int(self, prompt, low, high):
+        """low~high 범위의 정수를 입력받는다. 올바른 값이 들어올 때까지 반복한다."""
+        while True:
+            value = input(prompt).strip()
+
+            if value == "":
+                print(f"⚠️ 입력이 비어 있습니다. {low}-{high} 사이의 숫자를 입력하세요.")
+                continue
+
+            try:
+                number = int(value)
+            except ValueError:
+                print(f"⚠️ 숫자가 아닙니다. {low}-{high} 사이의 숫자를 입력하세요.")
+                continue
+
+            if number < low or number > high:
+                print(f"⚠️ 잘못된 입력입니다. {low}-{high} 사이의 숫자를 입력하세요.")
+                continue
+
+            return number
+
     def run(self):
         """메뉴를 반복 출력하며 사용자의 선택에 따라 기능을 실행한다."""
         while True:
             self.show_menu()
-            choice = input("선택: ").strip()
+            choice = self.input_int("선택: ", 1, 6)
 
-            if choice == "6":
+            if choice == 6:
                 print("\n👋 게임을 종료합니다. 안녕히 가세요!")
                 break
-            elif choice in ("1", "2", "3", "4", "5"):
-                print("\n🚧 아직 준비 중인 기능입니다.")
             else:
-                print("\n⚠️ 잘못된 입력입니다. 1-6 사이의 숫자를 입력하세요.")
+                print("\n🚧 아직 준비 중인 기능입니다.")
 
 
 def main():
