@@ -172,6 +172,18 @@ class QuizGame:
         self.save_state()
         print("\n✅ 퀴즈가 추가되었습니다!")
 
+    def list_quizzes(self):
+        """저장된 퀴즈 목록을 번호와 함께 출력한다."""
+        if not self.quizzes:
+            print("\n⚠️ 등록된 퀴즈가 없습니다. 먼저 퀴즈를 추가해 주세요.")
+            return
+
+        print(f"\n📋 등록된 퀴즈 목록 (총 {len(self.quizzes)}개)\n")
+        print(THIN_LINE)
+        for number, quiz in enumerate(self.quizzes, start=1):
+            print(f"[{number}] {quiz.question}")
+        print(THIN_LINE)
+
     def ask_one(self, quiz, number):
         """문제 하나를 출제한다. (정답 여부, 힌트 사용 여부)를 돌려준다."""
         quiz.display(number)
@@ -255,6 +267,8 @@ class QuizGame:
                 self.play_quiz()
             elif choice == 2:
                 self.add_quiz()
+            elif choice == 3:
+                self.list_quizzes()
             elif choice == 6:
                 print("\n👋 게임을 종료합니다. 안녕히 가세요!")
                 break
