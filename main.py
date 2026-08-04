@@ -145,6 +145,31 @@ class QuizGame:
         except OSError as error:
             print(f"⚠️ 저장에 실패했습니다. ({error})")
 
+    def play_quiz(self):
+        """저장된 퀴즈를 순서대로 출제하고 결과를 보여준다."""
+        if not self.quizzes:
+            print("\n⚠️ 등록된 퀴즈가 없습니다. 먼저 퀴즈를 추가해 주세요.")
+            return
+
+        total = len(self.quizzes)
+        print(f"\n📝 퀴즈를 시작합니다! (총 {total}문제)\n")
+
+        correct = 0
+        for number, quiz in enumerate(self.quizzes, start=1):
+            quiz.display(number)
+            selected = self.input_int("정답 입력 (1-4): ", 1, 4)
+            if quiz.check(selected):
+                print("✅ 정답입니다!\n")
+                correct += 1
+            else:
+                answer_text = quiz.choices[quiz.answer - 1]
+                print(f"❌ 오답입니다! 정답은 {quiz.answer}번 ({answer_text})\n")
+
+        score = round(correct / total * 100)
+        print(LINE)
+        print(f"🏆 결과: {total}문제 중 {correct}문제 정답! ({score}점)")
+        print(LINE)
+
     def input_int(self, prompt, low, high):
         """low~high 범위의 정수를 입력받는다. 올바른 값이 들어올 때까지 반복한다."""
         while True:
@@ -172,7 +197,9 @@ class QuizGame:
             self.show_menu()
             choice = self.input_int("선택: ", 1, 6)
 
-            if choice == 6:
+            if choice == 1:
+                self.play_quiz()
+            elif choice == 6:
                 print("\n👋 게임을 종료합니다. 안녕히 가세요!")
                 break
             else:
