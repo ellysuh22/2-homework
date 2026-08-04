@@ -1,7 +1,13 @@
 """나만의 퀴즈 게임 - 터미널에서 동작하는 4지선다 퀴즈 프로그램."""
 
+import json
+import os
+
 LINE = "=" * 40
 THIN_LINE = "-" * 40
+
+# 데이터 파일은 프로젝트 루트(main.py와 같은 위치)의 state.json으로 고정한다.
+STATE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "state.json")
 
 
 class Quiz:
@@ -105,6 +111,40 @@ class QuizGame:
         print("6. 종료")
         print(LINE)
 
+    def load_state(self):
+        """state.json에서 퀴즈와 점수를 불러온다. 없거나 손상되면 기본 퀴즈로 시작한다."""
+        if not os.path.exists(STATE_FILE):
+            print(f"📂 저장된 데이터가 없어 기본 퀴즈로 시작합니다. (퀴즈 {len(self.quizzes)}개)")
+            return
+
+        try:
+            with open(STATE_FILE, "r", encoding="utf-8") as file:
+                data = json.load(file)
+            self.quizzes = [Quiz.from_dict(item) for item in data["quizzes"]]
+            self.best_score = data["best_score"]
+            self.history = data["history"]
+        except (OSError, json.JSONDecodeError, KeyError, TypeError) as error:
+            print(f"⚠️ 저장 파일이 손상되어 기본 퀴즈로 복구합니다. ({error})")
+            self.quizzes = default_quizzes()
+            self.best_score = 0
+            self.history = []
+        else:
+            print(f"📂 저장된 데이터를 불러왔습니다. "
+                  f"(퀴즈 {len(self.quizzes)}개, 최고점수 {self.best_score}점)")
+
+    def save_state(self):
+        """현재 퀴즈 목록과 점수를 state.json에 UTF-8로 저장한다."""
+        data = {
+            "quizzes": [quiz.to_dict() for quiz in self.quizzes],
+            "best_score": self.best_score,
+            "history": self.history,
+        }
+        try:
+            with open(STATE_FILE, "w", encoding="utf-8") as file:
+                json.dump(data, file, ensure_ascii=False, indent=2)
+        except OSError as error:
+            print(f"⚠️ 저장에 실패했습니다. ({error})")
+
     def input_int(self, prompt, low, high):
         """low~high 범위의 정수를 입력받는다. 올바른 값이 들어올 때까지 반복한다."""
         while True:
@@ -142,6 +182,7 @@ class QuizGame:
 def main():
     """프로그램 진입점."""
     game = QuizGame()
+    game.load_state()
     game.run()
 
 
