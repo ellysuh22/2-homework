@@ -149,6 +149,29 @@ class QuizGame:
         except OSError as error:
             print(f"⚠️ 저장에 실패했습니다. ({error})")
 
+    def input_text(self, prompt):
+        """빈 값이 아닌 문자열을 입력받는다."""
+        while True:
+            value = input(prompt).strip()
+            if value == "":
+                print("⚠️ 입력이 비어 있습니다. 내용을 입력해 주세요.")
+                continue
+            return value
+
+    def add_quiz(self):
+        """새로운 퀴즈를 입력받아 목록에 추가하고 파일에 저장한다."""
+        print("\n📌 새로운 퀴즈를 추가합니다.\n")
+
+        question = self.input_text("문제를 입력하세요: ")
+        choices = []
+        for number in range(1, 5):
+            choices.append(self.input_text(f"선택지 {number}: "))
+        answer = self.input_int("정답 번호 (1-4): ", 1, 4)
+
+        self.quizzes.append(Quiz(question, choices, answer))
+        self.save_state()
+        print("\n✅ 퀴즈가 추가되었습니다!")
+
     def ask_one(self, quiz, number):
         """문제 하나를 출제한다. (정답 여부, 힌트 사용 여부)를 돌려준다."""
         quiz.display(number)
@@ -230,6 +253,8 @@ class QuizGame:
 
             if choice == 1:
                 self.play_quiz()
+            elif choice == 2:
+                self.add_quiz()
             elif choice == 6:
                 print("\n👋 게임을 종료합니다. 안녕히 가세요!")
                 break
