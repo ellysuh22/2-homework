@@ -9,3 +9,8 @@ state.json
 
 # macOS
 .DS_Store
+
+# 개인 학습 노트 / 과제 원문 외 자료 (제출 대상 아님)
+PASS_Answer.md
+미션2_평가기준.txt
+docs/과제-설명서.html
