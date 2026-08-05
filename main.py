@@ -5,7 +5,7 @@ import os
 import random
 from datetime import datetime
 
-LINE = "=" * 40
+LINE = "=" * 41
 THIN_LINE = "-" * 40
 
 HINT_CHOICE = 5    # 정답 입력창에서 힌트를 요청하는 번호
