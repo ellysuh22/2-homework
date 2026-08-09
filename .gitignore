@@ -10,10 +10,7 @@ state.json
 # macOS
 .DS_Store
 
-# 개인 학습 노트 / 과제 원문 외 자료 (제출 대상 아님)
-PASS_Answer.md
-미션2_평가기준.txt
-docs/과제-설명서.html
+# 과제 원문·학습 노트는 두 컴퓨터에서 함께 보기 위해 저장소에 포함한다.
 
 # 문서 자동 백업 (로컬 전용)
 .backup/

@@ -1,0 +1,1324 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2주차 과제 완전 해설서 — 나만의 퀴즈 게임</title>
+<style>
+  :root{
+    --bg:#ffffff; --fg:#1a1a1a; --muted:#5b6472; --line:#e3e8ef;
+    --blue:#2563eb; --blue-bg:#eff6ff;
+    --green:#16a34a; --green-bg:#f0fdf4;
+    --amber:#d97706; --amber-bg:#fffbeb;
+    --red:#dc2626; --red-bg:#fef2f2;
+    --purple:#7c3aed; --purple-bg:#f5f3ff;
+    --code-bg:#f6f8fa;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Malgun Gothic",sans-serif;
+    line-height:1.75; font-size:16px; word-break:keep-all;
+  }
+  .wrap{max-width:900px; margin:0 auto; padding:32px 20px 100px}
+
+  header.hero{
+    background:linear-gradient(135deg,#1e3a8a,#2563eb); color:#fff;
+    border-radius:18px; padding:36px 30px; margin-bottom:14px;
+  }
+  header.hero h1{margin:0 0 10px; font-size:29px; line-height:1.35}
+  header.hero p{margin:0; opacity:.92; font-size:15px}
+  .hero-meta{display:flex; flex-wrap:wrap; gap:8px; margin-top:18px}
+  .hero-meta span{background:rgba(255,255,255,.16); border-radius:999px; padding:5px 13px; font-size:13px}
+
+  .howto{background:var(--amber-bg); border:1px solid #fcd34d; border-radius:14px; padding:18px 20px; margin-bottom:34px}
+  .howto b{color:var(--amber)}
+
+  h2{
+    font-size:23px; margin:56px 0 6px; padding-top:22px; border-top:3px solid var(--fg);
+    line-height:1.4;
+  }
+  h2 .num{color:var(--blue)}
+  h2 + .lead{color:var(--muted); margin:0 0 26px; font-size:15px}
+  h3{font-size:19px; margin:38px 0 12px; padding-left:12px; border-left:5px solid var(--blue)}
+  h4{font-size:16px; margin:26px 0 8px}
+  p{margin:12px 0}
+
+  /* 용어 카드 */
+  .term{border:1px solid var(--line); border-radius:14px; margin:20px 0; overflow:hidden; background:#fff}
+  .term > .head{
+    background:var(--blue-bg); border-bottom:1px solid var(--line);
+    padding:13px 18px; font-weight:700; font-size:17px; color:#1e3a8a;
+    display:flex; align-items:center; gap:9px; flex-wrap:wrap;
+  }
+  .term > .head .tag{
+    font-size:11.5px; font-weight:600; background:#fff; color:var(--blue);
+    border:1px solid #bfdbfe; border-radius:999px; padding:2px 9px;
+  }
+  .term .row{display:flex; gap:14px; padding:13px 18px; border-bottom:1px dashed var(--line)}
+  .term .row:last-child{border-bottom:0}
+  .term .row .k{
+    flex:0 0 118px; font-weight:700; font-size:13.5px; color:var(--muted);
+  }
+  .term .row .v{flex:1; min-width:0}
+  .term .row.say{background:var(--green-bg)}
+  .term .row.say .k{color:var(--green)}
+  .term .row.say .v{font-weight:600; color:#14532d}
+
+  code{background:var(--code-bg); border:1px solid var(--line); border-radius:5px; padding:1px 6px; font-size:13.5px;
+       font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  pre{background:#0f172a; color:#e2e8f0; border-radius:12px; padding:16px 18px; overflow-x:auto; font-size:13.5px; line-height:1.65}
+  pre code{background:none; border:0; color:inherit; padding:0}
+  pre .c{color:#7dd3fc}
+  pre .g{color:#86efac}
+  pre .y{color:#fde047}
+  pre .m{color:#94a3b8}
+
+  figure{margin:26px 0; text-align:center}
+  figure svg{max-width:100%; height:auto}
+  figcaption{font-size:13.5px; color:var(--muted); margin-top:10px}
+
+  .callout{border-radius:12px; padding:15px 18px; margin:20px 0; border:1px solid}
+  .callout.tip{background:var(--green-bg); border-color:#bbf7d0}
+  .callout.warn{background:var(--red-bg); border-color:#fecaca}
+  .callout.note{background:var(--purple-bg); border-color:#ddd6fe}
+  .callout b{display:block; margin-bottom:4px}
+
+  table{width:100%; border-collapse:collapse; margin:20px 0; font-size:14.5px}
+  th,td{border:1px solid var(--line); padding:10px 12px; text-align:left; vertical-align:top}
+  th{background:var(--code-bg); font-weight:700}
+  .scroll{overflow-x:auto}
+
+  .qa{border:1px solid var(--line); border-radius:12px; margin:16px 0; overflow:hidden}
+  .qa .q{background:#1e293b; color:#fff; padding:12px 18px; font-weight:700; font-size:15.5px}
+  .qa .a{padding:15px 18px; background:#fff}
+  .qa .a p:first-child{margin-top:0}
+  .qa .a p:last-child{margin-bottom:0}
+
+  ul,ol{padding-left:22px}
+  li{margin:7px 0}
+
+  .check{list-style:none; padding:0}
+  .check li{
+    display:flex; gap:11px; align-items:flex-start;
+    padding:11px 14px; border:1px solid var(--line); border-radius:10px; margin:8px 0; background:#fff;
+  }
+  .check li .box{
+    flex:0 0 22px; height:22px; border-radius:6px; background:var(--green); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; margin-top:2px;
+  }
+  .check li.todo .box{background:#cbd5e1; color:#64748b}
+
+  .toc{background:var(--code-bg); border:1px solid var(--line); border-radius:14px; padding:20px 24px; margin-bottom:10px}
+  .toc h2{border:0; margin:0 0 10px; padding:0; font-size:18px}
+  .toc ol{margin:0; padding-left:20px}
+  .toc a{color:var(--blue); text-decoration:none}
+  .toc a:hover{text-decoration:underline}
+
+  @media print{
+    body{font-size:12pt}
+    header.hero{background:#1e3a8a !important; -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    h2{page-break-after:avoid}
+    .term,.qa,figure{page-break-inside:avoid}
+  }
+  @media (max-width:640px){
+    .term .row{flex-direction:column; gap:4px}
+    .term .row .k{flex:none}
+    header.hero h1{font-size:23px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>2주차 과제 완전 해설서<br>🎯 나만의 퀴즈 게임 (Python + Git)</h1>
+  <p>“내가 만든 프로그램이 왜 이렇게 동작하는지”를 평가자 앞에서 직접 설명하기 위한 문서입니다.</p>
+  <div class="hero-meta">
+    <span>Python 3.10+</span><span>클래스 2개</span><span>state.json</span>
+    <span>커밋 17개</span><span>브랜치 분기·병합</span><span>clone·pull 실습</span>
+  </div>
+</header>
+
+<div class="howto">
+  <b>📖 이 문서를 읽는 법</b>
+  모든 용어는 <b>①한 줄 뜻 → ②일상 비유 → ③내 프로젝트에서는 → ④평가자에게 이렇게 말하기</b> 순서로 정리했습니다.
+  시간이 없다면 각 카드의 <b style="color:#16a34a">초록색 “이렇게 말하기”</b> 줄만 읽어도 발표가 됩니다.
+  중간중간 나오는 그림은 말로 설명하기 어려운 부분을 눈으로 이해하도록 그린 것입니다.
+</div>
+
+<nav class="toc">
+  <h2>목차</h2>
+  <ol>
+    <li><a href="#s0">이 과제로 만든 것 — 30초 요약</a></li>
+    <li><a href="#s1">파이썬 기초 용어 (변수 · 자료형 · 조건문 · 반복문 · 함수)</a></li>
+    <li><a href="#s2">클래스와 객체 (붕어빵 틀 이야기)</a></li>
+    <li><a href="#s3">파일 저장과 JSON (프로그램을 꺼도 안 사라지는 이유)</a></li>
+    <li><a href="#s4">예외 처리 (프로그램이 안 죽게 만드는 법)</a></li>
+    <li><a href="#s5">Git 용어 총정리 (7개 명령어 + 브랜치)</a></li>
+    <li><a href="#s6">프로그램이 실제로 도는 순서 (전체 흐름도)</a></li>
+    <li><a href="#s7">평가자 예상 질문 20개 + 답변 대본</a></li>
+    <li><a href="#s8">제출 전 최종 체크리스트</a></li>
+  </ol>
+</nav>
+
+
+<!-- ══════════════════ 0 ══════════════════ -->
+<h2 id="s0"><span class="num">0.</span> 이 과제로 만든 것 — 30초 요약</h2>
+<p class="lead">먼저 “무엇을 만들었는가”를 한 문장과 한 그림으로 잡고 갑시다.</p>
+
+<div class="callout note">
+  <b>한 문장 요약</b>
+  터미널(검은 화면)에서 실행되는 <b>4지선다 퀴즈 게임</b>을 파이썬으로 만들고,
+  퀴즈와 점수를 <b>state.json 파일에 저장</b>해서 프로그램을 껐다 켜도 유지되게 했으며,
+  만드는 과정 전체를 <b>Git으로 기록해 GitHub에 공개</b>했습니다.
+</div>
+
+<figure>
+<svg viewBox="0 0 860 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="프로젝트 전체 구조도">
+  <style>
+    .t{font-family:-apple-system,'Apple SD Gothic Neo',sans-serif}
+    .lbl{font-size:14px;font-weight:700;fill:#1a1a1a}
+    .sub{font-size:12px;fill:#5b6472}
+    .tiny{font-size:11.5px;fill:#5b6472}
+  </style>
+  <rect x="0" y="0" width="860" height="400" fill="#fff"/>
+
+  <!-- 사용자 -->
+  <rect x="20" y="140" width="130" height="110" rx="14" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text class="t lbl" x="85" y="180" text-anchor="middle">👤 사용자</text>
+  <text class="t sub" x="85" y="203" text-anchor="middle">터미널에서</text>
+  <text class="t sub" x="85" y="221" text-anchor="middle">번호 입력</text>
+
+  <!-- 화살표 -->
+  <path d="M155 195 L215 195" stroke="#2563eb" stroke-width="2.5" marker-end="url(#ar)"/>
+  <defs>
+    <marker id="ar" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+      <path d="M0,0 L9,4.5 L0,9 z" fill="#2563eb"/>
+    </marker>
+    <marker id="ar2" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+      <path d="M0,0 L9,4.5 L0,9 z" fill="#16a34a"/>
+    </marker>
+  </defs>
+
+  <!-- main.py 박스 -->
+  <rect x="220" y="60" width="360" height="280" rx="16" fill="#f8fafc" stroke="#94a3b8" stroke-width="2"/>
+  <text class="t lbl" x="400" y="88" text-anchor="middle">main.py — 프로그램 본체</text>
+
+  <rect x="245" y="105" width="140" height="90" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+  <text class="t lbl" x="315" y="132" text-anchor="middle" fill="#5b21b6">Quiz 클래스</text>
+  <text class="t tiny" x="315" y="153" text-anchor="middle">문제 1개를 담당</text>
+  <text class="t tiny" x="315" y="171" text-anchor="middle">문제·선택지·정답·힌트</text>
+
+  <rect x="410" y="105" width="145" height="90" rx="12" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+  <text class="t lbl" x="482" y="132" text-anchor="middle" fill="#92400e">QuizGame 클래스</text>
+  <text class="t tiny" x="482" y="153" text-anchor="middle">게임 전체를 담당</text>
+  <text class="t tiny" x="482" y="171" text-anchor="middle">메뉴·채점·저장</text>
+
+  <rect x="245" y="215" width="310" height="100" rx="12" fill="#fff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text class="t lbl" x="400" y="240" text-anchor="middle">메뉴 6가지</text>
+  <text class="t tiny" x="400" y="263" text-anchor="middle">1 퀴즈 풀기 · 2 퀴즈 추가 · 3 퀴즈 목록</text>
+  <text class="t tiny" x="400" y="283" text-anchor="middle">4 퀴즈 삭제 · 5 점수 확인 · 6 종료</text>
+  <text class="t tiny" x="400" y="303" text-anchor="middle" fill="#dc2626">잘못된 입력은 안내 후 다시 입력받음</text>
+
+  <!-- 저장 화살표 -->
+  <path d="M585 195 L655 195" stroke="#16a34a" stroke-width="2.5" marker-end="url(#ar2)"/>
+  <path d="M655 225 L585 225" stroke="#16a34a" stroke-width="2.5" marker-end="url(#ar2)"/>
+  <text class="t tiny" x="620" y="187" text-anchor="middle" fill="#16a34a">저장</text>
+  <text class="t tiny" x="620" y="245" text-anchor="middle" fill="#16a34a">불러오기</text>
+
+  <!-- state.json -->
+  <rect x="660" y="140" width="175" height="110" rx="14" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text class="t lbl" x="747" y="175" text-anchor="middle" fill="#14532d">💾 state.json</text>
+  <text class="t sub" x="747" y="198" text-anchor="middle">퀴즈 목록</text>
+  <text class="t sub" x="747" y="216" text-anchor="middle">최고 점수</text>
+  <text class="t sub" x="747" y="234" text-anchor="middle">게임 기록</text>
+
+  <text class="t tiny" x="747" y="272" text-anchor="middle">프로그램을 꺼도</text>
+  <text class="t tiny" x="747" y="290" text-anchor="middle">여기 남아 있음</text>
+</svg>
+<figcaption>그림 0 — 사용자가 번호를 입력하면 main.py가 처리하고, 결과는 state.json 파일에 저장된다</figcaption>
+</figure>
+
+<h3>제출물이 왜 이렇게 3개인가</h3>
+<div class="scroll"><table>
+<tr><th>제출물</th><th>무엇인가</th><th>왜 필요한가</th></tr>
+<tr><td><b>main.py</b></td><td>파이썬 코드 파일 하나. 프로그램의 몸통.</td><td>“동작하는 프로그램”을 만들었다는 증거</td></tr>
+<tr><td><b>state.json</b></td><td>퀴즈·점수를 적어두는 데이터 저장 파일</td><td>“껐다 켜도 유지된다(데이터 영속성)”는 증거</td></tr>
+<tr><td><b>GitHub 저장소</b></td><td>만들어온 과정이 전부 기록된 온라인 창고</td><td>“혼자 한 번에 만든 게 아니라 단계별로 만들었다”는 증거</td></tr>
+</table></div>
+
+
+<!-- ══════════════════ 1 ══════════════════ -->
+<h2 id="s1"><span class="num">1.</span> 파이썬 기초 용어</h2>
+<p class="lead">과제 목표에 “변수, 자료형, 조건문, 반복문, 함수를 설명할 수 있어야 한다”가 적혀 있습니다. 하나씩 갑니다.</p>
+
+<div class="term">
+  <div class="head">변수 (variable) <span class="tag">이름표가 붙은 상자</span></div>
+  <div class="row"><div class="k">뜻</div><div class="v">값을 담아두고 <b>이름으로 다시 꺼내 쓰는 것</b>입니다.</div></div>
+  <div class="row"><div class="k">비유</div><div class="v">택배 상자에 “겨울옷”이라고 매직으로 써 붙이는 것과 같습니다. 나중에 상자를 다 열어보지 않아도 “겨울옷” 상자만 찾으면 됩니다.</div></div>
+  <div class="row"><div class="k">왜 쓰나</div><div class="v">같은 값을 여러 곳에서 쓸 때 <b>한 곳만 고치면 전부 바뀌기</b> 때문입니다. 힌트 감점을 5점→3점으로 바꾸고 싶으면 <code>HINT_PENALTY = 5</code> 한 줄만 고치면 됩니다.</div></div>
+  <div class="row"><div class="k">내 코드에서</div><div class="v"><code>correct = 0</code> (맞힌 개수), <code>total</code> (푼 문제 수), <code>HINT_PENALTY = 5</code> (힌트 감점), <code>STATE_FILE</code> (저장 파일 경로)</div></div>
+  <div class="row say"><div class="k">💬 이렇게 말하기</div><div class="v">“변수는 값에 이름을 붙여 저장해 두는 공간입니다. 저는 감점 점수를 <code>HINT_PENALTY</code>라는 변수로 맨 위에 빼두어서, 규칙이 바뀌면 그 한 줄만 고치면 되도록 만들었습니다.”</div></div>
+</div>
+
+<h3>자료형 5가지 — int, str, bool, list, dict</h3>
+<p>자료형은 “<b>이 값이 어떤 종류인가</b>”입니다. 숫자인지, 글자인지, 참/거짓인지에 따라 컴퓨터가 할 수 있는 일이 달라집니다.</p>
+
+<figure>
+<svg viewBox="0 0 860 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="파이썬 자료형 5가지 비교">
+  <style>
+    .t{font-family:-apple-system,'Apple SD Gothic Neo',sans-serif}
+    .h{font-size:15px;font-weight:700}
+    .d{font-size:12px;fill:#475569}
+    .c{font-size:12.5px;font-family:ui-monospace,Menlo,monospace;fill:#0f172a}
+  </style>
+  <rect width="860" height="330" fill="#fff"/>
+
+  <!-- int -->
+  <rect x="15" y="20" width="155" height="130" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text class="t h" x="92" y="48" text-anchor="middle" fill="#1e3a8a">int (정수)</text>
+  <text class="t d" x="92" y="70" text-anchor="middle">숫자. 계산 가능</text>
+  <text class="t c" x="92" y="97" text-anchor="middle">answer = 2</text>
+  <text class="t c" x="92" y="117" text-anchor="middle">score = 80</text>
+  <text class="t d" x="92" y="139" text-anchor="middle">더하기·비교 O</text>
+
+  <!-- str -->
+  <rect x="185" y="20" width="155" height="130" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+  <text class="t h" x="262" y="48" text-anchor="middle" fill="#5b21b6">str (문자열)</text>
+  <text class="t d" x="262" y="70" text-anchor="middle">글자. 따옴표로 감쌈</text>
+  <text class="t c" x="262" y="97" text-anchor="middle">"파이썬에서…"</text>
+  <text class="t c" x="262" y="117" text-anchor="middle">hint = "힌트"</text>
+  <text class="t d" x="262" y="139" text-anchor="middle">"2"는 숫자 아님!</text>
+
+  <!-- bool -->
+  <rect x="355" y="20" width="155" height="130" rx="12" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text class="t h" x="432" y="48" text-anchor="middle" fill="#14532d">bool (참/거짓)</text>
+  <text class="t d" x="432" y="70" text-anchor="middle">True 또는 False</text>
+  <text class="t c" x="432" y="97" text-anchor="middle">is_correct = True</text>
+  <text class="t c" x="432" y="117" text-anchor="middle">hint_used = False</text>
+  <text class="t d" x="432" y="139" text-anchor="middle">딱 두 값뿐</text>
+
+  <!-- list -->
+  <rect x="525" y="20" width="155" height="130" rx="12" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+  <text class="t h" x="602" y="48" text-anchor="middle" fill="#92400e">list (목록)</text>
+  <text class="t d" x="602" y="70" text-anchor="middle">순서가 있는 여러 값</text>
+  <text class="t c" x="602" y="97" text-anchor="middle">["( )","[ ]",</text>
+  <text class="t c" x="602" y="115" text-anchor="middle"> "{ }","&lt; &gt;"]</text>
+  <text class="t d" x="602" y="139" text-anchor="middle">0,1,2… 번호로 꺼냄</text>
+
+  <!-- dict -->
+  <rect x="695" y="20" width="150" height="130" rx="12" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text class="t h" x="770" y="48" text-anchor="middle" fill="#991b1b">dict (사전)</text>
+  <text class="t d" x="770" y="70" text-anchor="middle">이름표(키)로 꺼냄</text>
+  <text class="t c" x="770" y="97" text-anchor="middle">{"score": 80,</text>
+  <text class="t c" x="770" y="115" text-anchor="middle"> "total": 5}</text>
+  <text class="t d" x="770" y="139" text-anchor="middle">번호 대신 키 사용</text>
+
+  <!-- 아래 비교 -->
+  <rect x="15" y="175" width="830" height="140" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text class="t h" x="430" y="202" text-anchor="middle" fill="#1a1a1a">list vs dict — 가장 헷갈리는 두 개</text>
+
+  <text class="t d" x="140" y="232" text-anchor="middle" font-weight="700">📋 list = 번호표</text>
+  <text class="t c" x="140" y="256" text-anchor="middle">choices[0] → "( )"</text>
+  <text class="t c" x="140" y="276" text-anchor="middle">choices[1] → "[ ]"</text>
+  <text class="t d" x="140" y="298" text-anchor="middle">"몇 번째 것?" 으로 찾기</text>
+
+  <line x1="430" y1="220" x2="430" y2="300" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4 4"/>
+
+  <text class="t d" x="640" y="232" text-anchor="middle" font-weight="700">🏷️ dict = 이름표</text>
+  <text class="t c" x="640" y="256" text-anchor="middle">record["score"] → 80</text>
+  <text class="t c" x="640" y="276" text-anchor="middle">record["total"] → 5</text>
+  <text class="t d" x="640" y="298" text-anchor="middle">"무슨 이름의 것?" 으로 찾기</text>
+</svg>
+<figcaption>그림 1 — 자료형 5가지. list는 “몇 번째”, dict는 “무슨 이름”으로 값을 찾는다는 게 핵심 차이</figcaption>
+</figure>
+
+<div class="callout tip">
+  <b>💬 자료형 질문이 나오면 이렇게</b>
+  “<b>int</b>는 계산할 수 있는 숫자, <b>str</b>은 글자, <b>bool</b>은 참/거짓 두 가지뿐인 값입니다.
+  <b>list</b>는 순서가 있어서 <u>몇 번째</u>로 꺼내고, <b>dict</b>는 이름표(키)를 붙여서 <u>이름</u>으로 꺼냅니다.
+  제 프로그램에서 선택지 4개는 순서가 중요하니까 list로, 게임 기록은 날짜·점수처럼 항목마다 이름이 필요하니까 dict로 저장했습니다.”
+</div>
+
+<div class="term">
+  <div class="head">조건문 if / elif / else <span class="tag">갈림길</span></div>
+  <div class="row"><div class="k">뜻</div><div class="v">“만약 ~라면 이것, 아니면 저것”을 시키는 문법입니다.</div></div>
+  <div class="row"><div class="k">비유</div><div class="v">자판기입니다. 1번을 누르면 콜라, 2번을 누르면 사이다, 그 외 번호면 “없는 번호입니다” 안내가 나옵니다.</div></div>
+  <div class="row"><div class="k">내 코드에서</div><div class="v">메뉴 처리 부분이 그대로 자판기입니다. <code>if choice == 1</code> → 퀴즈 풀기, <code>elif choice == 2</code> → 퀴즈 추가 … <code>else</code> → 종료.</div></div>
+  <div class="row say"><div class="k">💬 이렇게 말하기</div><div class="v">“if는 조건이 맞을 때, elif는 그게 아니고 다른 조건일 때, else는 나머지 전부일 때 실행됩니다. 메뉴 1~6번을 이 구조로 나눠서 각 기능에 연결했습니다.”</div></div>
+</div>
+
+<div class="term">
+  <div class="head">반복문 for / while <span class="tag">같은 일 여러 번</span></div>
+  <div class="row"><div class="k">for의 뜻</div><div class="v"><b>횟수가 정해진</b> 반복. “이 목록에 있는 것 전부 하나씩”</div></div>
+  <div class="row"><div class="k">while의 뜻</div><div class="v"><b>횟수를 모르는</b> 반복. “조건이 만족될 때까지 계속”</div></div>
+  <div class="row"><div class="k">비유</div><div class="v"><b>for</b>는 “장바구니에 담긴 물건 5개를 하나씩 계산대에 올린다”(개수를 안다).<br><b>while</b>은 “손님이 다 나갈 때까지 문을 연다”(몇 명 올지 모른다).</div></div>
+  <div class="row"><div class="k">내 코드에서</div><div class="v"><b>for</b> — 뽑은 문제를 하나씩 출제: <code>for number, quiz in enumerate(selected_quizzes, start=1)</code><br><b>while</b> — 올바른 숫자가 들어올 때까지 계속 다시 물음: <code>while True:</code> in <code>input_int()</code></div></div>
+  <div class="row say"><div class="k">💬 이렇게 말하기</div><div class="v">“몇 번 돌지 <b>아는</b> 경우는 for, <b>모르는</b> 경우는 while을 씁니다. 문제 5개를 출제하는 건 개수를 아니까 for, 사용자가 언제 제대로 입력할지는 모르니까 입력 검증은 while로 만들었습니다.”</div></div>
+</div>
+
+<div class="term">
+  <div class="head">함수 (function) <span class="tag">기능 하나를 묶은 도구</span></div>
+  <div class="row"><div class="k">뜻</div><div class="v">자주 쓰는 작업에 <b>이름을 붙여 묶어둔 것</b>. 이름만 부르면 그 작업이 실행됩니다.</div></div>
+  <div class="row"><div class="k">비유</div><div class="v">전자레인지 “해동” 버튼입니다. 안에서 무슨 일이 벌어지는지 몰라도 버튼만 누르면 됩니다. 누를 때마다 매번 시간·출력을 다시 설정할 필요가 없습니다.</div></div>
+  <div class="row"><div class="k">매개변수</div><div class="v">함수에 <b>넣어주는 값</b>. 전자레인지에 넣는 “음식”에 해당. <code>input_int("선택: ", 1, 6)</code>에서 <code>1</code>과 <code>6</code>이 매개변수(허용 범위)입니다.</div></div>
+  <div class="row"><div class="k">반환값</div><div class="v">함수가 <b>돌려주는 결과</b>. 데워져 나온 음식. <code>input_int()</code>는 검증을 통과한 숫자를 돌려줍니다.</div></div>
+  <div class="row"><div class="k">내 코드에서</div><div class="v">숫자 입력 검증이 메뉴·정답·문제 수·삭제 번호 등 <b>5군데</b>에서 필요했는데, <code>input_int()</code> 함수 하나로 묶어서 모든 곳에서 재사용했습니다.</div></div>
+  <div class="row say"><div class="k">💬 이렇게 말하기</div><div class="v">“함수는 반복되는 작업에 이름을 붙여 재사용하는 도구입니다. 저는 숫자 입력 검증을 <code>input_int()</code> 하나로 만들어서, 같은 검증 코드를 5번 복사하지 않고 다섯 곳에서 불러 쓰도록 했습니다. 검증 규칙이 바뀌어도 한 곳만 고치면 됩니다.”</div></div>
+</div>
+
+
+<!-- ══════════════════ 2 ══════════════════ -->
+<h2 id="s2"><span class="num">2.</span> 클래스와 객체 — 붕어빵 틀 이야기</h2>
+<p class="lead">이 과제에서 가장 중요한 개념이자, 평가자가 가장 많이 물어볼 부분입니다.</p>
+
+<figure>
+<svg viewBox="0 0 860 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="클래스와 객체 비유">
+  <style>
+    .t{font-family:-apple-system,'Apple SD Gothic Neo',sans-serif}
+    .h{font-size:16px;font-weight:700}
+    .d{font-size:12.5px;fill:#475569}
+    .c{font-size:12px;font-family:ui-monospace,Menlo,monospace;fill:#0f172a}
+  </style>
+  <rect width="860" height="340" fill="#fff"/>
+  <defs>
+    <marker id="a3" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#7c3aed"/>
+    </marker>
+  </defs>
+
+  <!-- 클래스 = 틀 -->
+  <rect x="30" y="45" width="230" height="235" rx="16" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2.5"/>
+  <text class="t h" x="145" y="80" text-anchor="middle" fill="#5b21b6">클래스 = 붕어빵 틀</text>
+  <text class="t d" x="145" y="104" text-anchor="middle">모양을 정해두는 설계도</text>
+
+  <rect x="60" y="122" width="170" height="130" rx="10" fill="#fff" stroke="#a78bfa" stroke-width="1.5"/>
+  <text class="t c" x="75" y="146">class Quiz:</text>
+  <text class="t c" x="88" y="168">question (문제)</text>
+  <text class="t c" x="88" y="188">choices  (선택지)</text>
+  <text class="t c" x="88" y="208">answer   (정답)</text>
+  <text class="t c" x="88" y="228">hint     (힌트)</text>
+  <text class="t d" x="145" y="246" text-anchor="middle">↑ 담을 칸만 정해둔 상태</text>
+
+  <!-- 화살표 -->
+  <path d="M270 160 L340 160" stroke="#7c3aed" stroke-width="3" marker-end="url(#a3)"/>
+  <text class="t d" x="305" y="148" text-anchor="middle" fill="#5b21b6" font-weight="700">찍어내면</text>
+  <text class="t c" x="305" y="182" text-anchor="middle">Quiz(...)</text>
+
+  <!-- 객체들 -->
+  <text class="t h" x="600" y="40" text-anchor="middle" fill="#92400e">객체 = 구워 나온 붕어빵들</text>
+  <text class="t d" x="600" y="62" text-anchor="middle">틀은 하나, 속 내용물은 제각각</text>
+
+  <rect x="355" y="80" width="230" height="90" rx="12" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+  <text class="t c" x="370" y="104">question = "리스트 괄호는?"</text>
+  <text class="t c" x="370" y="124">choices  = ["( )","[ ]",…]</text>
+  <text class="t c" x="370" y="144">answer   = 2</text>
+  <text class="t d" x="370" y="162">→ 퀴즈 1번</text>
+
+  <rect x="605" y="80" width="230" height="90" rx="12" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+  <text class="t c" x="620" y="104">question = "True/False 자료형?"</text>
+  <text class="t c" x="620" y="124">choices  = ["int","str",…]</text>
+  <text class="t c" x="620" y="144">answer   = 3</text>
+  <text class="t d" x="620" y="162">→ 퀴즈 2번</text>
+
+  <rect x="355" y="190" width="230" height="90" rx="12" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+  <text class="t c" x="370" y="214">question = "__init__ 은?"</text>
+  <text class="t c" x="370" y="234">choices  = ["__init__",…]</text>
+  <text class="t c" x="370" y="254">answer   = 1</text>
+  <text class="t d" x="370" y="272">→ 퀴즈 3번</text>
+
+  <rect x="605" y="190" width="230" height="90" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="6 4"/>
+  <text class="t d" x="720" y="228" text-anchor="middle">… 퀴즈 4, 5, 6 …</text>
+  <text class="t d" x="720" y="252" text-anchor="middle">몇 개든 같은 틀로 계속</text>
+</svg>
+<figcaption>그림 2 — 클래스는 “틀(설계도)”, 객체는 그 틀로 실제로 만들어낸 개별 결과물</figcaption>
+</figure>
+
+<div class="term">
+  <div class="head">클래스 (class) <span class="tag">설계도 / 붕어빵 틀</span></div>
+  <div class="row"><div class="k">뜻</div><div class="v">같은 모양의 데이터를 여러 개 만들기 위한 <b>틀</b>입니다. “퀴즈라는 건 문제·선택지·정답·힌트를 가진다”는 규칙을 먼저 정의합니다.</div></div>
+  <div class="row"><div class="k">왜 쓰나</div><div class="v">클래스가 없으면 퀴즈 6개를 만들 때 <b>변수 24개</b>(문제6+선택지6+정답6+힌트6)를 따로 관리해야 합니다. 클래스를 쓰면 퀴즈 하나가 <b>덩어리 하나</b>로 다뤄집니다.</div></div>
+  <div class="row"><div class="k">내 프로젝트</div><div class="v"><b>Quiz</b>(문제 한 개 담당)와 <b>QuizGame</b>(게임 전체 담당) 두 개를 만들었습니다. 과제 요구인 “최소 2개 클래스”를 충족합니다.</div></div>
+  <div class="row say"><div class="k">💬 이렇게 말하기</div><div class="v">“클래스는 붕어빵 틀이고 객체는 그 틀로 구워낸 붕어빵입니다. 저는 문제 하나를 담당하는 <code>Quiz</code>와 게임 전체를 담당하는 <code>QuizGame</code>으로 역할을 나눴습니다. 이렇게 나누면 문제 형식을 바꿀 때는 Quiz만, 메뉴 흐름을 바꿀 때는 QuizGame만 손대면 됩니다.”</div></div>
+</div>
+
+<div class="term">
+  <div class="head">객체 (object) / 인스턴스 <span class="tag">틀로 찍어낸 실물</span></div>
+  <div class="row"><div class="k">뜻</div><div class="v">클래스로 실제로 <b>만들어낸 하나하나</b>입니다. 틀은 1개지만 붕어빵은 6개일 수 있습니다.</div></div>
+  <div class="row"><div class="k">내 코드에서</div><div class="v"><code>Quiz("파이썬에서 리스트를 만들 때…", ["( )","[ ]","{ }","&lt; &gt;"], 2, "순서가 있고…")</code> — 이렇게 부르는 순간 퀴즈 객체 1개가 만들어집니다. 기본 퀴즈 5개가 이렇게 생성됩니다.</div></div>
+  <div class="row say"><div class="k">💬 이렇게 말하기</div><div class="v">“클래스 이름을 함수처럼 부르면 객체가 만들어집니다. 제 프로그램은 시작할 때 기본 퀴즈 5개를 Quiz 객체로 만들어서 리스트에 담아둡니다.”</div></div>
+</div>
+
+<div class="term">
+  <div class="head">__init__ (생성자) <span class="tag">태어날 때 딱 한 번</span></div>
+  <div class="row"><div class="k">뜻</div><div class="v">객체가 <b>만들어지는 순간 자동으로 딱 한 번</b> 실행되는 특별한 함수입니다. 처음 값을 채워 넣는 역할을 합니다.</div></div>
+  <div class="row"><div class="k">비유</div><div class="v">아기가 태어나면 <b>출생신고서</b>를 씁니다. 이름·생년월일·성별을 그때 한 번 기록하죠. <code>__init__</code>이 그 출생신고서입니다.</div></div>
+  <div class="row"><div class="k">내 코드에서</div><div class="v"><code>def __init__(self, question, choices, answer, hint=""):</code> — 퀴즈 객체가 태어날 때 문제·선택지·정답·힌트를 받아서 자기 안에 저장합니다.</div></div>
+  <div class="row say"><div class="k">💬 이렇게 말하기</div><div class="v">“<code>__init__</code>은 생성자라고 부르는데, 객체가 만들어질 때 자동으로 실행돼서 초기값을 세팅합니다. 제가 <code>Quiz(...)</code>라고 쓰면 파이썬이 알아서 <code>__init__</code>을 호출해서 문제와 선택지를 채워 넣습니다.”</div></div>
+</div>
+
+<div class="term">
+  <div class="head">self <span class="tag">“나 자신”</span></div>
+  <div class="row"><div class="k">뜻</div><div class="v">메서드 안에서 <b>그 객체 자기 자신</b>을 가리키는 단어입니다.</div></div>
+  <div class="row"><div class="k">비유</div><div class="v">붕어빵 6개가 나란히 있을 때 “<b>내</b> 팥소”라고 말하는 것과 같습니다. 3번 붕어빵이 “내 팥소”라고 하면 3번 것을 가리키고, 5번이 말하면 5번 것을 가리킵니다. 같은 코드인데 누가 말하느냐에 따라 대상이 달라집니다.</div></div>
+  <div class="row"><div class="k">내 코드에서</div><div class="v"><code>self.question</code>은 “<b>이</b> 퀴즈의 문제”입니다. 퀴즈 1번의 <code>display()</code>를 부르면 1번 문제가, 3번 것을 부르면 3번 문제가 출력됩니다. 코드는 딱 한 벌인데 말이죠.</div></div>
+  <div class="row say"><div class="k">💬 이렇게 말하기</div><div class="v">“<code>self</code>는 ‘나 자신’이라는 뜻입니다. 퀴즈가 6개 있어도 출력 코드는 한 벌만 있으면 되는데, <code>self.question</code>이라고 쓰면 그 코드를 부른 퀴즈의 문제가 자동으로 들어가기 때문입니다.”</div></div>
+</div>
+
+<div class="term">
+  <div class="head">속성(attribute) vs 메서드(method) <span class="tag">가진 것 vs 하는 것</span></div>
+  <div class="row"><div class="k">속성</div><div class="v">객체가 <b>가지고 있는 값</b>. 명사입니다. → 퀴즈의 문제, 선택지, 정답, 힌트</div></div>
+  <div class="row"><div class="k">메서드</div><div class="v">객체가 <b>할 수 있는 동작</b>. 동사입니다. → 문제를 출력하다, 정답인지 확인하다</div></div>
+  <div class="row"><div class="k">비유</div><div class="v">스마트폰으로 치면 <b>속성</b>은 “색상, 저장용량, 배터리 잔량”이고 <b>메서드</b>는 “전화 걸기, 사진 찍기”입니다.</div></div>
+  <div class="row"><div class="k">내 코드 (Quiz)</div><div class="v">속성 4개: <code>question</code> <code>choices</code> <code>answer</code> <code>hint</code><br>메서드 4개: <code>display()</code>(문제 출력) <code>check()</code>(정답 확인) <code>to_dict()</code>(저장용 변환) <code>from_dict()</code>(불러오기용 변환)</div></div>
+  <div class="row"><div class="k">내 코드 (QuizGame)</div><div class="v">속성 3개: <code>quizzes</code>(퀴즈 목록) <code>best_score</code>(최고 점수) <code>history</code>(게임 기록)<br>메서드: <code>show_menu()</code> <code>run()</code> <code>play_quiz()</code> <code>add_quiz()</code> <code>list_quizzes()</code> <code>delete_quiz()</code> <code>show_score()</code> <code>load_state()</code> <code>save_state()</code> <code>input_int()</code> 등</div></div>
+  <div class="row say"><div class="k">💬 이렇게 말하기</div><div class="v">“속성은 그 객체가 <b>가진 값</b>, 메서드는 그 객체가 <b>하는 일</b>입니다. Quiz는 문제·선택지·정답을 가지고, 자기를 화면에 출력하고 채점하는 일을 합니다.”</div></div>
+</div>
+
+<h3>왜 클래스를 2개로 나눴는지 (역할 분리)</h3>
+<figure>
+<svg viewBox="0 0 860 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Quiz와 QuizGame 역할 분리">
+  <style>
+    .t{font-family:-apple-system,'Apple SD Gothic Neo',sans-serif}
+    .h{font-size:15px;font-weight:700}
+    .d{font-size:12.5px;fill:#475569}
+  </style>
+  <rect width="860" height="250" fill="#fff"/>
+  <rect x="30" y="30" width="370" height="190" rx="14" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+  <text class="t h" x="215" y="60" text-anchor="middle" fill="#5b21b6">Quiz — “문제 한 개” 담당</text>
+  <text class="t d" x="55" y="92">• 문제 내용과 선택지를 들고 있는다</text>
+  <text class="t d" x="55" y="118">• 자기 문제를 화면에 예쁘게 출력한다</text>
+  <text class="t d" x="55" y="144">• 입력받은 번호가 정답인지 판단한다</text>
+  <text class="t d" x="55" y="170">• 저장용 형태(딕셔너리)로 자기를 바꾼다</text>
+  <text class="t d" x="215" y="200" text-anchor="middle" font-weight="700" fill="#5b21b6">메뉴나 점수는 전혀 모름</text>
+
+  <rect x="450" y="30" width="380" height="190" rx="14" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+  <text class="t h" x="640" y="60" text-anchor="middle" fill="#92400e">QuizGame — “게임 전체” 담당</text>
+  <text class="t d" x="475" y="92">• 메뉴를 보여주고 선택을 받는다</text>
+  <text class="t d" x="475" y="118">• 퀴즈들을 골라서 순서대로 출제한다</text>
+  <text class="t d" x="475" y="144">• 맞힌 개수를 세고 점수를 계산한다</text>
+  <text class="t d" x="475" y="170">• state.json에 저장하고 불러온다</text>
+  <text class="t d" x="640" y="200" text-anchor="middle" font-weight="700" fill="#92400e">문제 하나하나의 내용은 Quiz에게 맡김</text>
+</svg>
+<figcaption>그림 3 — 식당으로 치면 Quiz는 “요리 한 접시”, QuizGame은 “홀 매니저”. 서로 남의 일에 참견하지 않는다</figcaption>
+</figure>
+
+
+<!-- ══════════════════ 3 ══════════════════ -->
+<h2 id="s3"><span class="num">3.</span> 파일 저장과 JSON — 껐다 켜도 안 사라지는 이유</h2>
+<p class="lead">과제의 핵심 요구 중 하나인 “데이터 영속성”입니다.</p>
+
+<h3>먼저: 왜 파일에 저장해야 하나?</h3>
+<figure>
+<svg viewBox="0 0 860 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="메모리와 파일의 차이">
+  <style>
+    .t{font-family:-apple-system,'Apple SD Gothic Neo',sans-serif}
+    .h{font-size:15px;font-weight:700}
+    .d{font-size:12.5px;fill:#475569}
+    .big{font-size:22px}
+  </style>
+  <rect width="860" height="300" fill="#fff"/>
+
+  <!-- 메모리 -->
+  <rect x="25" y="25" width="390" height="250" rx="14" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text class="t h" x="220" y="55" text-anchor="middle" fill="#991b1b">❌ 메모리에만 두면 (칠판)</text>
+  <text class="t d" x="220" y="80" text-anchor="middle">프로그램이 켜져 있는 동안만 존재</text>
+
+  <rect x="60" y="100" width="140" height="80" rx="10" fill="#fff" stroke="#fca5a5" stroke-width="1.5"/>
+  <text class="t d" x="130" y="128" text-anchor="middle">퀴즈 6개</text>
+  <text class="t d" x="130" y="150" text-anchor="middle">최고점수 80점</text>
+  <text class="t d" x="130" y="170" text-anchor="middle" font-size="11">실행 중</text>
+
+  <text class="t big" x="228" y="148" text-anchor="middle">→</text>
+  <text class="t d" x="228" y="172" text-anchor="middle" font-size="11">프로그램 종료</text>
+
+  <rect x="255" y="100" width="130" height="80" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text class="t d" x="320" y="145" text-anchor="middle" fill="#94a3b8">텅 비었음</text>
+
+  <text class="t d" x="220" y="215" text-anchor="middle">다시 켜면 → 퀴즈 5개, 최고점수 0점</text>
+  <text class="t d" x="220" y="243" text-anchor="middle" fill="#991b1b" font-weight="700">애써 추가한 퀴즈가 전부 날아감</text>
+
+  <!-- 파일 -->
+  <rect x="445" y="25" width="390" height="250" rx="14" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text class="t h" x="640" y="55" text-anchor="middle" fill="#14532d">✅ 파일에 저장하면 (공책)</text>
+  <text class="t d" x="640" y="80" text-anchor="middle">프로그램을 꺼도 디스크에 남음</text>
+
+  <rect x="480" y="100" width="140" height="80" rx="10" fill="#fff" stroke="#86efac" stroke-width="1.5"/>
+  <text class="t d" x="550" y="128" text-anchor="middle">퀴즈 6개</text>
+  <text class="t d" x="550" y="150" text-anchor="middle">최고점수 80점</text>
+  <text class="t d" x="550" y="170" text-anchor="middle" font-size="11">state.json에 기록</text>
+
+  <text class="t big" x="648" y="148" text-anchor="middle">→</text>
+  <text class="t d" x="648" y="172" text-anchor="middle" font-size="11">프로그램 종료</text>
+
+  <rect x="675" y="100" width="130" height="80" rx="10" fill="#fff" stroke="#86efac" stroke-width="1.5"/>
+  <text class="t d" x="740" y="135" text-anchor="middle">퀴즈 6개</text>
+  <text class="t d" x="740" y="157" text-anchor="middle">최고점수 80점</text>
+
+  <text class="t d" x="640" y="215" text-anchor="middle">다시 켜면 → “📂 저장된 데이터를 불러왔습니다”</text>
+  <text class="t d" x="640" y="243" text-anchor="middle" fill="#14532d" font-weight="700">추가한 퀴즈와 점수가 그대로 유지</text>
+</svg>
+<figcaption>그림 4 — 메모리는 칠판(지워짐), 파일은 공책(남음). 이 차이를 “데이터 영속성”이라고 부른다</figcaption>
+</figure>
+
+<div class="term">
+  <div class="head">JSON <span class="tag">사람도 컴퓨터도 읽는 데이터 형식</span></div>
+  <div class="row"><div class="k">읽는 법</div><div class="v">“제이슨”이라고 읽습니다. JavaScript Object Notation의 줄임말입니다.</div></div>
+  <div class="row"><div class="k">뜻</div><div class="v">데이터를 <b>{ 이름: 값 } 형태로 적어두는 국제 표준 약속</b>입니다. 파이썬의 dict와 모양이 거의 같아서 서로 변환이 쉽습니다.</div></div>
+  <div class="row"><div class="k">비유</div><div class="v">회원가입 종이 양식과 같습니다. “이름: 홍길동 / 나이: 20 / 취미: [독서, 등산]”처럼 <b>항목 이름과 값을 짝지어</b> 적습니다. 양식이 정해져 있으니 누가 읽어도 헷갈리지 않습니다.</div></div>
+  <div class="row"><div class="k">왜 쓰나</div><div class="v">① 사람이 파일을 열어 눈으로 읽을 수 있음 ② 파이썬에 <code>json</code> 기능이 기본 포함되어 별도 설치 불필요 ③ 어떤 프로그래밍 언어든 읽을 수 있는 표준</div></div>
+  <div class="row"><div class="k">내 프로젝트</div><div class="v">퀴즈 목록·최고 점수·게임 기록을 <code>state.json</code>에 저장합니다.</div></div>
+  <div class="row say"><div class="k">💬 이렇게 말하기</div><div class="v">“JSON은 데이터를 이름과 값의 짝으로 적어두는 표준 형식입니다. 파이썬 딕셔너리와 구조가 같아서 변환이 간단하고, 파일을 그냥 열어봐도 사람이 읽을 수 있어서 저장 형식으로 골랐습니다.”</div></div>
+</div>
+
+<h3>저장/불러오기가 실제로 어떻게 도는가</h3>
+<figure>
+<svg viewBox="0 0 860 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="객체와 JSON 변환 흐름">
+  <style>
+    .t{font-family:-apple-system,'Apple SD Gothic Neo',sans-serif}
+    .h{font-size:14px;font-weight:700}
+    .d{font-size:12px;fill:#475569}
+    .c{font-size:11.5px;font-family:ui-monospace,Menlo,monospace;fill:#0f172a}
+    .m{font-size:12.5px;font-weight:700}
+  </style>
+  <rect width="860" height="330" fill="#fff"/>
+  <defs>
+    <marker id="g1" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="b1" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker>
+  </defs>
+
+  <!-- 3단계 박스 -->
+  <rect x="30" y="90" width="215" height="120" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+  <text class="t h" x="137" y="118" text-anchor="middle" fill="#5b21b6">① Quiz 객체</text>
+  <text class="t d" x="137" y="140" text-anchor="middle">파이썬 안에서만 존재</text>
+  <text class="t c" x="137" y="165" text-anchor="middle">quiz.question</text>
+  <text class="t c" x="137" y="185" text-anchor="middle">quiz.answer</text>
+
+  <rect x="320" y="90" width="215" height="120" rx="12" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text class="t h" x="427" y="118" text-anchor="middle" fill="#991b1b">② 딕셔너리(dict)</text>
+  <text class="t d" x="427" y="140" text-anchor="middle">중간 변환 형태</text>
+  <text class="t c" x="427" y="165" text-anchor="middle">{"question": "…",</text>
+  <text class="t c" x="427" y="185" text-anchor="middle"> "answer": 2}</text>
+
+  <rect x="610" y="90" width="220" height="120" rx="12" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text class="t h" x="720" y="118" text-anchor="middle" fill="#14532d">③ state.json 파일</text>
+  <text class="t d" x="720" y="140" text-anchor="middle">디스크에 실제로 남음</text>
+  <text class="t c" x="720" y="165" text-anchor="middle">{ "quizzes": [ … ],</text>
+  <text class="t c" x="720" y="185" text-anchor="middle">  "best_score": 80 }</text>
+
+  <!-- 저장 방향 (위) -->
+  <path d="M250 125 L313 125" stroke="#16a34a" stroke-width="2.5" marker-end="url(#g1)"/>
+  <text class="t m" x="281" y="112" text-anchor="middle" fill="#16a34a">to_dict()</text>
+  <path d="M540 125 L603 125" stroke="#16a34a" stroke-width="2.5" marker-end="url(#g1)"/>
+  <text class="t m" x="571" y="112" text-anchor="middle" fill="#16a34a">json.dump()</text>
+  <text class="t m" x="430" y="62" text-anchor="middle" fill="#16a34a">▼ 저장할 때 (save_state) — 왼쪽에서 오른쪽</text>
+
+  <!-- 불러오기 방향 (아래) -->
+  <path d="M313 180 L250 180" stroke="#2563eb" stroke-width="2.5" marker-end="url(#b1)"/>
+  <text class="t m" x="281" y="203" text-anchor="middle" fill="#2563eb">from_dict()</text>
+  <path d="M603 180 L540 180" stroke="#2563eb" stroke-width="2.5" marker-end="url(#b1)"/>
+  <text class="t m" x="571" y="203" text-anchor="middle" fill="#2563eb">json.load()</text>
+  <text class="t m" x="430" y="240" text-anchor="middle" fill="#2563eb">▲ 불러올 때 (load_state) — 오른쪽에서 왼쪽</text>
+
+  <!-- 설명 -->
+  <rect x="30" y="262" width="800" height="52" rx="10" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text class="t d" x="430" y="286" text-anchor="middle">파이썬 객체는 파일에 그대로 쓸 수 없어서, 딕셔너리라는 중간 형태를 거쳐 JSON 글자로 바꿔 저장합니다.</text>
+  <text class="t d" x="430" y="305" text-anchor="middle">불러올 때는 정확히 반대 순서로 되돌립니다. 그래서 메서드 이름도 to_dict / from_dict 로 짝을 맞췄습니다.</text>
+</svg>
+<figcaption>그림 5 — 저장은 객체 → 딕셔너리 → JSON 파일, 불러오기는 그 반대. 짝을 이루는 2단계 변환</figcaption>
+</figure>
+
+<div class="term">
+  <div class="head">UTF-8 인코딩 <span class="tag">한글이 깨지지 않게</span></div>
+  <div class="row"><div class="k">뜻</div><div class="v">글자를 컴퓨터가 저장할 숫자로 바꾸는 <b>규칙(약속)</b>입니다. UTF-8은 전 세계 문자를 다 담을 수 있는 표준입니다.</div></div>
+  <div class="row"><div class="k">비유</div><div class="v">모스 부호 약속표와 같습니다. 보내는 쪽과 받는 쪽이 <b>같은 약속표</b>를 써야 말이 통합니다. 다른 표를 쓰면 “ìë…•” 같은 깨진 글자가 나옵니다.</div></div>
+  <div class="row"><div class="k">내 코드에서</div><div class="v"><code>open(STATE_FILE, "w", encoding="utf-8")</code> — 읽을 때도 쓸 때도 utf-8로 통일했습니다.<br><code>json.dump(data, file, ensure_ascii=False)</code> — 이 옵션을 꺼야 한글이 <code>안</code> 같은 코드가 아니라 <b>“안녕”</b> 그대로 저장됩니다.</div></div>
+  <div class="row say"><div class="k">💬 이렇게 말하기</div><div class="v">“한글 문제를 저장해야 해서 인코딩을 UTF-8로 지정했습니다. 그리고 <code>ensure_ascii=False</code> 옵션을 줘서 파일을 열었을 때 한글이 그대로 보이도록 했습니다.”</div></div>
+</div>
+
+<h4>실제 state.json 파일 내용</h4>
+<pre><code>{
+  <span class="c">"quizzes"</span>: [
+    {
+      <span class="c">"question"</span>: <span class="g">"파이썬에서 리스트를 만들 때 사용하는 괄호는?"</span>,
+      <span class="c">"choices"</span>: [<span class="g">"( )"</span>, <span class="g">"[ ]"</span>, <span class="g">"{ }"</span>, <span class="g">"&lt; &gt;"</span>],
+      <span class="c">"answer"</span>: <span class="y">2</span>,
+      <span class="c">"hint"</span>: <span class="g">"순서가 있고 나중에 값을 바꿀 수 있는 자료형에 쓰는 기호입니다."</span>
+    }
+  ],
+  <span class="c">"best_score"</span>: <span class="y">80</span>,
+  <span class="c">"history"</span>: [
+    { <span class="c">"date"</span>: <span class="g">"2026-08-04 20:04"</span>, <span class="c">"total"</span>: <span class="y">5</span>, <span class="c">"correct"</span>: <span class="y">4</span>, <span class="c">"score"</span>: <span class="y">80</span> }
+  ]
+}</code></pre>
+<p><b>구조 읽는 법:</b> 큰 이름표 3개(<code>quizzes</code>, <code>best_score</code>, <code>history</code>)가 있고,
+<code>quizzes</code> 안에 <code>[ ]</code>로 퀴즈들이 줄줄이 들어 있습니다. 퀴즈 하나마다 다시 <code>{ }</code> 안에 문제·선택지·정답·힌트가 있습니다.</p>
+
+
+<!-- ══════════════════ 4 ══════════════════ -->
+<h2 id="s4"><span class="num">4.</span> 예외 처리 — 프로그램이 안 죽게 만드는 법</h2>
+<p class="lead">과제에서 “잘못된 입력 처리”와 “try/except”를 명시적으로 요구합니다. 평가자가 직접 <code>abc</code>를 쳐볼 가능성이 높은 부분입니다.</p>
+
+<div class="term">
+  <div class="head">try / except <span class="tag">일단 해보고, 실패하면 대처</span></div>
+  <div class="row"><div class="k">뜻</div><div class="v"><code>try</code> 블록의 코드를 <b>일단 시도</b>하고, 오류가 나면 프로그램이 죽는 대신 <code>except</code> 블록으로 <b>넘어가서 수습</b>합니다.</div></div>
+  <div class="row"><div class="k">비유</div><div class="v">우산을 들고 나가는 것과 같습니다. 비가 안 오면 그냥 가고(try 성공), 비가 오면 우산을 펴서 대처합니다(except). 우산이 없으면 그냥 홀딱 젖습니다(프로그램 강제 종료).</div></div>
+  <div class="row"><div class="k">내 코드 ①</div><div class="v">숫자 변환: <code>int("abc")</code>는 오류가 납니다. 이걸 <code>try</code>로 감싸고 <code>except ValueError</code>에서 “⚠️ 숫자가 아닙니다”를 출력한 뒤 다시 물어봅니다.</div></div>
+  <div class="row"><div class="k">내 코드 ②</div><div class="v">파일 읽기: <code>except (OSError, json.JSONDecodeError, KeyError, TypeError)</code> — 파일이 깨졌거나, 형식이 이상하거나, 필요한 항목이 없어도 프로그램이 죽지 않고 기본 퀴즈로 복구합니다.</div></div>
+  <div class="row say"><div class="k">💬 이렇게 말하기</div><div class="v">“try/except는 오류가 날 수 있는 코드를 감싸서, 실제로 오류가 나도 프로그램이 강제 종료되지 않게 하는 장치입니다. 저는 숫자 변환 실패와 저장 파일 손상 두 곳에 적용했습니다.”</div></div>
+</div>
+
+<figure>
+<svg viewBox="0 0 860 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="입력 검증 흐름도">
+  <style>
+    .t{font-family:-apple-system,'Apple SD Gothic Neo',sans-serif}
+    .d{font-size:12.5px;fill:#1a1a1a}
+    .s{font-size:11.5px;fill:#5b6472}
+    .h{font-size:14px;font-weight:700}
+  </style>
+  <rect width="860" height="360" fill="#fff"/>
+  <defs>
+    <marker id="k1" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#475569"/></marker>
+    <marker id="k2" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#dc2626"/></marker>
+  </defs>
+
+  <text class="t h" x="430" y="26" text-anchor="middle">input_int() — 숫자 입력이 필요한 모든 곳에서 쓰는 검증 함수</text>
+
+  <!-- 입력 -->
+  <rect x="330" y="45" width="200" height="42" rx="21" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text class="t d" x="430" y="71" text-anchor="middle">사용자가 무언가 입력</text>
+  <path d="M430 88 L430 108" stroke="#475569" stroke-width="2" marker-end="url(#k1)"/>
+
+  <!-- 검사 4단계 -->
+  <g>
+    <rect x="300" y="110" width="260" height="38" rx="8" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+    <text class="t d" x="430" y="134" text-anchor="middle">① 앞뒤 공백 제거  " 1 " → "1"</text>
+    <path d="M430 149 L430 165" stroke="#475569" stroke-width="2" marker-end="url(#k1)"/>
+
+    <rect x="300" y="167" width="260" height="38" rx="8" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+    <text class="t d" x="430" y="191" text-anchor="middle">② 비어 있나?  (그냥 Enter)</text>
+    <path d="M430 206 L430 222" stroke="#475569" stroke-width="2" marker-end="url(#k1)"/>
+
+    <rect x="300" y="224" width="260" height="38" rx="8" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+    <text class="t d" x="430" y="248" text-anchor="middle">③ 숫자로 바꿀 수 있나?  ("abc")</text>
+    <path d="M430 263 L430 279" stroke="#475569" stroke-width="2" marker-end="url(#k1)"/>
+
+    <rect x="300" y="281" width="260" height="38" rx="8" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+    <text class="t d" x="430" y="305" text-anchor="middle">④ 허용 범위 안인가?  (메뉴 9번)</text>
+  </g>
+
+  <!-- 실패 경로 -->
+  <path d="M300 186 L200 186 L200 250" stroke="#dc2626" stroke-width="2" fill="none"/>
+  <path d="M300 243 L200 243" stroke="#dc2626" stroke-width="2" fill="none"/>
+  <path d="M300 300 L200 300 L200 250" stroke="#dc2626" stroke-width="2" fill="none"/>
+  <rect x="40" y="228" width="150" height="46" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text class="t d" x="115" y="247" text-anchor="middle" fill="#991b1b">⚠️ 안내 메시지</text>
+  <text class="t s" x="115" y="265" text-anchor="middle">출력 후 다시 물어봄</text>
+  <path d="M115 228 L115 66 L328 66" stroke="#dc2626" stroke-width="2" fill="none" marker-end="url(#k2)"/>
+  <text class="t s" x="180" y="58" fill="#dc2626">되돌아가서 재입력 (while 반복)</text>
+
+  <!-- 성공 -->
+  <path d="M560 300 L640 300" stroke="#16a34a" stroke-width="2.5" marker-end="url(#k1)"/>
+  <rect x="645" y="278" width="190" height="46" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text class="t d" x="740" y="298" text-anchor="middle" fill="#14532d">✅ 검증 통과한 숫자를</text>
+  <text class="t d" x="740" y="316" text-anchor="middle" fill="#14532d">돌려주고 함수 종료</text>
+
+  <text class="t s" x="740" y="130" text-anchor="middle">이 함수 하나를</text>
+  <text class="t s" x="740" y="150" text-anchor="middle">메뉴 선택 / 정답 입력 /</text>
+  <text class="t s" x="740" y="170" text-anchor="middle">문제 수 / 삭제 번호에서</text>
+  <text class="t s" x="740" y="190" text-anchor="middle">모두 재사용합니다</text>
+</svg>
+<figcaption>그림 6 — 잘못된 입력은 어떤 경우든 안내 메시지를 띄우고 처음으로 돌아가 다시 물어본다. 절대 프로그램이 죽지 않는다</figcaption>
+</figure>
+
+<div class="scroll"><table>
+<tr><th>평가자가 입력해볼 것</th><th>어떤 종류의 오류인가</th><th>내 프로그램의 반응</th></tr>
+<tr><td><code> 1 </code> (앞뒤 공백)</td><td>공백 포함 입력</td><td><code>.strip()</code>으로 공백을 지우고 정상 처리 ✅</td></tr>
+<tr><td><code>abc</code></td><td>숫자 변환 실패 (ValueError)</td><td>“⚠️ 숫자가 아닙니다” → 다시 입력받음</td></tr>
+<tr><td><code>9</code> (메뉴에서)</td><td>허용 범위 초과</td><td>“⚠️ 잘못된 입력입니다. 1-6 사이의 숫자를 입력하세요” → 다시</td></tr>
+<tr><td>그냥 Enter</td><td>빈 입력</td><td>“⚠️ 입력이 비어 있습니다” → 다시 입력받음</td></tr>
+<tr><td><code>Ctrl + C</code></td><td>KeyboardInterrupt</td><td>“⚠️ 입력이 중단되었습니다. 저장 후 안전하게 종료합니다” → <b>저장하고</b> 정상 종료</td></tr>
+<tr><td>state.json을 일부러 망가뜨림</td><td>JSONDecodeError</td><td>“⚠️ 저장 파일이 손상되어 기본 퀴즈로 복구합니다” → 기본 5문제로 실행</td></tr>
+<tr><td>state.json 파일을 지움</td><td>파일 없음</td><td>“📂 저장된 데이터가 없어 기본 퀴즈로 시작합니다” → 정상 실행</td></tr>
+</table></div>
+
+<div class="callout warn">
+  <b>⚠️ 여기가 감점 포인트입니다</b>
+  대부분의 과제가 “정상 동작”은 하는데 <b>이상한 입력에서 빨간 오류 메시지를 내며 죽습니다</b>.
+  평가자는 거의 항상 <code>abc</code>나 <code>Ctrl+C</code>를 눌러봅니다. 제 프로그램은 위 7가지 경우를 전부 처리했고,
+  <b>Ctrl+C를 눌러도 데이터를 저장한 뒤</b> 종료한다는 점을 꼭 말씀하세요.
+</div>
+
+
+<!-- ══════════════════ 5 ══════════════════ -->
+<h2 id="s5"><span class="num">5.</span> Git 용어 총정리</h2>
+<p class="lead">과제에서 <b>init · add · commit · push · pull · checkout · clone</b> 7개를 각각 한 번 이상 쓰라고 요구합니다. 여기가 가장 설명하기 어려운 부분이라 그림부터 봅니다.</p>
+
+<div class="term">
+  <div class="head">Git이란? <span class="tag">작업 기록 + 되돌리기</span></div>
+  <div class="row"><div class="k">뜻</div><div class="v">파일이 언제, 누가, 무엇을, 왜 바꿨는지 <b>전부 기록해두고 언제든 그 시점으로 되돌아갈 수 있게</b> 해주는 도구입니다.</div></div>
+  <div class="row"><div class="k">비유</div><div class="v">게임의 <b>세이브 파일</b>입니다. 보스 앞에서 세이브해두면, 죽어도 그 지점부터 다시 시작할 수 있습니다. Git 없이 작업하는 건 세이브 없이 게임하는 것과 같습니다.</div></div>
+  <div class="row"><div class="k">Git 없으면?</div><div class="v"><code>과제_최종.py</code>, <code>과제_최종_진짜최종.py</code>, <code>과제_최종_진짜진짜최종_수정본.py</code>… 이렇게 됩니다. 어느 게 최신인지 아무도 모릅니다.</div></div>
+  <div class="row"><div class="k">GitHub와 차이</div><div class="v"><b>Git</b>은 내 컴퓨터에서 도는 프로그램, <b>GitHub</b>는 그 기록을 올려두는 인터넷 창고(웹사이트)입니다. 카카오톡(앱)과 카카오 서버의 관계와 비슷합니다.</div></div>
+  <div class="row say"><div class="k">💬 이렇게 말하기</div><div class="v">“Git은 코드의 변경 이력을 저장하고 되돌릴 수 있게 해주는 버전 관리 도구입니다. GitHub는 그 기록을 인터넷에 올려 백업하고 공유하는 서비스고요. 저는 기능 하나를 완성할 때마다 커밋해서 총 17개의 기록을 남겼습니다.”</div></div>
+</div>
+
+<h3>⭐ 가장 중요한 그림 — Git의 4개 공간</h3>
+<p>Git 명령어가 헷갈리는 이유는 <b>파일이 머무는 공간이 4개</b>인데 그걸 모르고 명령어만 외우기 때문입니다. 이 그림 하나면 7개 명령어가 전부 이해됩니다.</p>
+
+<figure>
+<svg viewBox="0 0 880 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Git 4개 공간과 명령어">
+  <style>
+    .t{font-family:-apple-system,'Apple SD Gothic Neo',sans-serif}
+    .h{font-size:15px;font-weight:700}
+    .d{font-size:12px;fill:#475569}
+    .cmd{font-size:13px;font-weight:700;font-family:ui-monospace,Menlo,monospace}
+    .note{font-size:11.5px;fill:#64748b}
+  </style>
+  <rect width="880" height="480" fill="#fff"/>
+  <defs>
+    <marker id="fw" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker>
+    <marker id="bw" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+  </defs>
+
+  <!-- 내 컴퓨터 영역 -->
+  <rect x="15" y="60" width="600" height="290" rx="16" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="8 5"/>
+  <text class="t h" x="40" y="88" fill="#64748b">💻 내 컴퓨터 (로컬)</text>
+
+  <!-- 인터넷 영역 -->
+  <rect x="640" y="60" width="225" height="290" rx="16" fill="#fef3c7" stroke="#d97706" stroke-width="2" stroke-dasharray="8 5"/>
+  <text class="t h" x="665" y="88" fill="#92400e">☁️ 인터넷</text>
+
+  <!-- 1 작업 폴더 -->
+  <rect x="35" y="110" width="165" height="150" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text class="t h" x="117" y="138" text-anchor="middle" fill="#1e3a8a">① 작업 폴더</text>
+  <text class="t note" x="117" y="157" text-anchor="middle">Working Directory</text>
+  <text class="t d" x="117" y="184" text-anchor="middle">지금 편집 중인</text>
+  <text class="t d" x="117" y="203" text-anchor="middle">진짜 파일들</text>
+  <text class="t note" x="117" y="228" text-anchor="middle">main.py</text>
+  <text class="t note" x="117" y="245" text-anchor="middle">README.md</text>
+
+  <!-- 2 스테이징 -->
+  <rect x="230" y="110" width="165" height="150" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+  <text class="t h" x="312" y="138" text-anchor="middle" fill="#5b21b6">② 대기 장소</text>
+  <text class="t note" x="312" y="157" text-anchor="middle">Staging Area</text>
+  <text class="t d" x="312" y="184" text-anchor="middle">“이번에 기록할</text>
+  <text class="t d" x="312" y="203" text-anchor="middle">것만 골라 담기”</text>
+  <text class="t note" x="312" y="228" text-anchor="middle">🛒 장바구니</text>
+  <text class="t note" x="312" y="245" text-anchor="middle">에 담긴 상태</text>
+
+  <!-- 3 로컬 저장소 -->
+  <rect x="425" y="110" width="165" height="150" rx="12" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text class="t h" x="507" y="138" text-anchor="middle" fill="#14532d">③ 내 저장소</text>
+  <text class="t note" x="507" y="157" text-anchor="middle">Local Repository</text>
+  <text class="t d" x="507" y="184" text-anchor="middle">확정된 기록이</text>
+  <text class="t d" x="507" y="203" text-anchor="middle">쌓이는 곳</text>
+  <text class="t note" x="507" y="228" text-anchor="middle">📜 커밋 17개</text>
+  <text class="t note" x="507" y="245" text-anchor="middle">(내 컴퓨터에만)</text>
+
+  <!-- 4 원격 -->
+  <rect x="665" y="110" width="175" height="150" rx="12" fill="#fff" stroke="#d97706" stroke-width="2"/>
+  <text class="t h" x="752" y="138" text-anchor="middle" fill="#92400e">④ GitHub</text>
+  <text class="t note" x="752" y="157" text-anchor="middle">Remote Repository</text>
+  <text class="t d" x="752" y="184" text-anchor="middle">인터넷에 올라간</text>
+  <text class="t d" x="752" y="203" text-anchor="middle">공개 백업본</text>
+  <text class="t note" x="752" y="228" text-anchor="middle">🌐 남도 볼 수 있음</text>
+  <text class="t note" x="752" y="245" text-anchor="middle">= 제출용</text>
+
+  <!-- 앞으로 가는 화살표 -->
+  <path d="M203 165 L226 165" stroke="#2563eb" stroke-width="3" marker-end="url(#fw)"/>
+  <text class="t cmd" x="214" y="106" text-anchor="middle" fill="#2563eb">add</text>
+  <path d="M398 165 L421 165" stroke="#2563eb" stroke-width="3" marker-end="url(#fw)"/>
+  <text class="t cmd" x="409" y="106" text-anchor="middle" fill="#2563eb">commit</text>
+  <path d="M593 165 L661 165" stroke="#2563eb" stroke-width="3" marker-end="url(#fw)"/>
+  <text class="t cmd" x="627" y="106" text-anchor="middle" fill="#2563eb">push</text>
+
+  <!-- 뒤로 오는 화살표 -->
+  <path d="M661 230 L593 230" stroke="#16a34a" stroke-width="3" marker-end="url(#bw)"/>
+  <text class="t cmd" x="627" y="290" text-anchor="middle" fill="#16a34a">pull</text>
+  <path d="M660 300 L120 300 L120 265" stroke="#16a34a" stroke-width="3" fill="none" marker-end="url(#bw)"/>
+  <text class="t cmd" x="380" y="318" text-anchor="middle" fill="#16a34a">clone (통째로 처음 내려받기)</text>
+
+  <!-- init -->
+  <text class="t cmd" x="117" y="286" text-anchor="middle" fill="#dc2626">↑ init</text>
+  <text class="t note" x="117" y="304" text-anchor="middle">여기서 Git 시작</text>
+
+  <!-- 하단 요약 -->
+  <rect x="15" y="368" width="850" height="98" rx="12" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text class="t h" x="440" y="394" text-anchor="middle">한 문장 요약</text>
+  <text class="t d" x="440" y="422" text-anchor="middle" font-size="13.5">
+    파일을 고치고(①) → 기록할 것만 장바구니에 담고(add) → 이름 붙여 확정 저장하고(commit) → 인터넷에 올린다(push)
+  </text>
+  <text class="t d" x="440" y="448" text-anchor="middle" font-size="13.5">
+    반대로, 인터넷에 있는 걸 처음 통째로 받는 게 clone, 이미 받은 걸 최신으로 갱신하는 게 pull
+  </text>
+</svg>
+<figcaption>그림 7 — Git의 4개 공간과 7개 명령어. 이 그림이 Git 설명의 전부라고 해도 과언이 아니다</figcaption>
+</figure>
+
+<h3>명령어 7개 하나씩</h3>
+
+<div class="term">
+  <div class="head"><code>git init</code> <span class="tag">1️⃣ 시작</span></div>
+  <div class="row"><div class="k">뜻</div><div class="v">이 폴더에서 <b>Git 기록을 시작하겠다</b>고 선언합니다. 딱 한 번만 합니다.</div></div>
+  <div class="row"><div class="k">비유</div><div class="v">새 공책 첫 장에 “2026 업무일지”라고 제목을 쓰는 것. 이제부터 여기에 기록이 쌓입니다.</div></div>
+  <div class="row"><div class="k">일어나는 일</div><div class="v">폴더 안에 <code>.git</code>이라는 숨김 폴더가 생깁니다. 여기에 모든 기록이 저장됩니다. 이 폴더를 지우면 이력이 전부 날아갑니다.</div></div>
+  <div class="row say"><div class="k">💬 한마디</div><div class="v">“프로젝트 폴더에서 <code>git init</code>을 실행해 버전 관리를 시작했습니다.”</div></div>
+</div>
+
+<div class="term">
+  <div class="head"><code>git add</code> <span class="tag">2️⃣ 담기</span></div>
+  <div class="row"><div class="k">뜻</div><div class="v">바뀐 파일 중 <b>이번 기록에 포함할 것만 골라서</b> 대기 장소(스테이징)에 올립니다.</div></div>
+  <div class="row"><div class="k">비유</div><div class="v">마트에서 <b>장바구니에 담는 것</b>입니다. 아직 계산(commit)은 안 했습니다. 담았다가 뺄 수도 있습니다.</div></div>
+  <div class="row"><div class="k">왜 이 단계가 있나</div><div class="v">파일 10개를 고쳤어도 “메뉴 기능”과 관련된 3개만 먼저 기록하고 싶을 수 있기 때문입니다. <b>기록을 의미 단위로 깔끔하게 나누기 위한</b> 장치입니다.</div></div>
+  <div class="row say"><div class="k">💬 한마디</div><div class="v">“<code>git add</code>는 커밋할 파일을 골라 담는 단계입니다. 장바구니에 담는 것에 비유할 수 있고, 이 단계가 있어서 변경사항을 기능별로 나눠 커밋할 수 있습니다.”</div></div>
+</div>
+
+<div class="term">
+  <div class="head"><code>git commit</code> <span class="tag">3️⃣ 확정 저장</span></div>
+  <div class="row"><div class="k">뜻</div><div class="v">장바구니에 담은 내용을 <b>“이런 작업을 했다”는 설명(메시지)과 함께 확정 저장</b>합니다. 이 하나하나가 되돌아갈 수 있는 세이브 포인트입니다.</div></div>
+  <div class="row"><div class="k">비유</div><div class="v">계산대에서 <b>영수증을 받는 것</b>. 영수증에는 날짜와 품목이 찍힙니다. 나중에 “언제 뭘 샀지?”를 영수증으로 확인합니다.</div></div>
+  <div class="row"><div class="k">좋은 메시지</div><div class="v">❌ <code>수정</code>, <code>ㅇㅇ</code>, <code>update</code> — 나중에 아무 도움이 안 됨<br>✅ <code>Feat: 퀴즈 출제 기능 구현</code> — 뭘 했는지 바로 보임</div></div>
+  <div class="row"><div class="k">접두어 규칙</div><div class="v"><b>Feat</b> 새 기능 / <b>Fix</b> 오류 수정 / <b>Docs</b> 문서 작업 / <b>Refactor</b> 동작은 그대로 두고 코드 정리 / <b>Chore</b> 설정·잡일</div></div>
+  <div class="row"><div class="k">내 프로젝트</div><div class="v">총 <b>17개</b> 커밋 (요구: 10개 이상 ✅). 전부 이 접두어 규칙을 지켰습니다.</div></div>
+  <div class="row say"><div class="k">💬 한마디</div><div class="v">“커밋은 변경사항을 설명과 함께 확정 저장하는 것입니다. 저는 기능 하나를 완성할 때마다 커밋해서, 나중에 어느 시점에 무슨 기능이 들어갔는지 이력만 봐도 알 수 있게 만들었습니다.”</div></div>
+</div>
+
+<div class="term">
+  <div class="head"><code>git push</code> <span class="tag">4️⃣ 올리기</span></div>
+  <div class="row"><div class="k">뜻</div><div class="v">내 컴퓨터에 쌓인 커밋들을 <b>GitHub(인터넷)로 올립니다.</b></div></div>
+  <div class="row"><div class="k">비유</div><div class="v">휴대폰 사진을 <b>클라우드에 백업</b>하는 것. 폰이 고장 나도 사진은 남습니다.</div></div>
+  <div class="row"><div class="k">중요</div><div class="v">commit만 하고 push를 안 하면 <b>GitHub에는 아무것도 없습니다.</b> 제출은 GitHub 주소로 하므로, 마지막에 push했는지 반드시 확인해야 합니다.</div></div>
+  <div class="row say"><div class="k">💬 한마디</div><div class="v">“push는 내 컴퓨터의 커밋 기록을 GitHub에 올리는 명령입니다. 커밋은 내 컴퓨터에만 남기 때문에, 백업하고 제출하려면 push가 반드시 필요합니다.”</div></div>
+</div>
+
+<div class="term">
+  <div class="head"><code>git clone</code> <span class="tag">5️⃣ 통째로 내려받기</span></div>
+  <div class="row"><div class="k">뜻</div><div class="v">GitHub에 있는 저장소를 <b>내 컴퓨터로 통째로 복사</b>해 옵니다. 코드뿐 아니라 <b>과거 이력 전부</b>를 함께 가져옵니다.</div></div>
+  <div class="row"><div class="k">비유</div><div class="v">도서관 책을 통째로 <b>복사해서 집으로 가져오는 것</b>. 처음 한 번만 합니다.</div></div>
+  <div class="row"><div class="k">언제 쓰나</div><div class="v">새 컴퓨터에서 작업을 이어받을 때, 남의 프로젝트를 받아볼 때, 팀에 새로 합류할 때.</div></div>
+  <div class="row"><div class="k">내 실습</div><div class="v">과제 요구사항대로, 완성된 저장소를 별도 폴더에 clone한 뒤 → README를 한 줄 고쳐 commit·push → 원래 폴더에서 pull로 받아왔습니다.</div></div>
+  <div class="row say"><div class="k">💬 한마디</div><div class="v">“clone은 GitHub 저장소를 이력까지 통째로 내 컴퓨터에 복제하는 명령입니다. 저는 실습으로 제 저장소를 다른 폴더에 clone해서 두 곳에서 작업하는 상황을 만들어봤습니다.”</div></div>
+</div>
+
+<div class="term">
+  <div class="head"><code>git pull</code> <span class="tag">6️⃣ 최신으로 갱신</span></div>
+  <div class="row"><div class="k">뜻</div><div class="v">GitHub에 <b>새로 올라온 변경사항만</b> 내 컴퓨터로 받아와 합칩니다.</div></div>
+  <div class="row"><div class="k">clone과 차이</div><div class="v"><b>clone</b>은 처음 한 번 통째로 받는 것(집에 없던 책을 가져옴), <b>pull</b>은 이미 있는 것을 최신으로 업데이트하는 것(앱 업데이트).</div></div>
+  <div class="row"><div class="k">비유</div><div class="v">단톡방에 안 들어와 있는 동안 쌓인 <b>새 메시지만 받아오는 것</b>.</div></div>
+  <div class="row"><div class="k">내 실습</div><div class="v">clone한 폴더에서 README를 수정해 push한 뒤, 원래 작업 폴더에서 <code>git pull</code>로 그 변경을 가져와 반영을 확인했습니다.</div></div>
+  <div class="row say"><div class="k">💬 한마디</div><div class="v">“pull은 GitHub의 최신 변경사항을 내 컴퓨터로 받아오는 명령입니다. clone은 처음 한 번 전체를 받는 것이고, pull은 이후에 바뀐 부분을 갱신하는 것이라는 점이 다릅니다.”</div></div>
+</div>
+
+<div class="term">
+  <div class="head"><code>git checkout</code> <span class="tag">7️⃣ 작업 공간 이동</span></div>
+  <div class="row"><div class="k">뜻</div><div class="v"><b>브랜치를 옮겨 다니거나</b>, 과거 특정 시점으로 돌아갑니다. <code>-b</code> 옵션을 붙이면 새 브랜치를 만들면서 바로 이동합니다.</div></div>
+  <div class="row"><div class="k">비유</div><div class="v">TV <b>채널을 바꾸는 것</b>. 채널을 바꾸면 화면 내용이 통째로 바뀌지만, 원래 채널이 사라진 건 아닙니다.</div></div>
+  <div class="row"><div class="k">내 프로젝트</div><div class="v"><code>git checkout -b feature/play-quiz</code> — 퀴즈 풀기 기능을 만들 별도 브랜치를 만들어 이동했습니다.</div></div>
+  <div class="row say"><div class="k">💬 한마디</div><div class="v">“checkout은 브랜치를 이동하는 명령입니다. 저는 퀴즈 풀기 기능을 만들 때 <code>feature/play-quiz</code>라는 브랜치를 새로 만들어서 그쪽으로 이동해 작업했습니다.”</div></div>
+</div>
+
+<h3>브랜치와 병합 — 왜 나눠서 작업했나</h3>
+
+<div class="term">
+  <div class="head">브랜치 (branch) <span class="tag">평행세계 / 안전한 실험실</span></div>
+  <div class="row"><div class="k">뜻</div><div class="v">본 작업(main)은 그대로 둔 채, <b>따로 갈라져 나와 작업하는 복사된 흐름</b>입니다.</div></div>
+  <div class="row"><div class="k">비유</div><div class="v">문서를 “<b>다른 이름으로 저장</b>”해서 마음껏 실험해보는 것과 같습니다. 망쳐도 원본은 멀쩡합니다. 잘되면 원본에 반영하고, 안 되면 그냥 버리면 됩니다.</div></div>
+  <div class="row"><div class="k">왜 필요한가</div><div class="v">혼자 할 때도 “새 기능을 만들다가 기존에 잘 되던 것까지 망가지는” 사고를 막아줍니다. 팀에서는 여러 명이 <b>서로 방해하지 않고 동시에</b> 작업할 수 있게 해줍니다.</div></div>
+  <div class="row"><div class="k">병합(merge)</div><div class="v">따로 만든 브랜치의 작업을 <b>다시 main으로 합치는 것</b>입니다. 실험이 성공했으니 원본에 반영하는 단계입니다.</div></div>
+  <div class="row say"><div class="k">💬 한마디</div><div class="v">“브랜치는 원본을 건드리지 않고 따로 작업하는 공간입니다. 퀴즈 풀기 기능이 이 프로그램에서 가장 복잡한 부분이라, <code>feature/play-quiz</code> 브랜치를 따로 만들어 작업하고, 정상 동작을 확인한 뒤 main에 병합했습니다.”</div></div>
+</div>
+
+<figure>
+<svg viewBox="0 0 860 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="브랜치 분기와 병합">
+  <style>
+    .t{font-family:-apple-system,'Apple SD Gothic Neo',sans-serif}
+    .h{font-size:14px;font-weight:700}
+    .d{font-size:12px;fill:#475569}
+    .n{font-size:11.5px;fill:#334155}
+  </style>
+  <rect width="860" height="330" fill="#fff"/>
+
+  <text class="t h" x="430" y="30" text-anchor="middle">내 저장소의 실제 브랜치 이력</text>
+
+  <!-- main 선 -->
+  <line x1="60" y1="200" x2="800" y2="200" stroke="#2563eb" stroke-width="3.5"/>
+  <text class="t h" x="45" y="205" text-anchor="end" fill="#2563eb">main</text>
+
+  <!-- main 커밋들 -->
+  <circle cx="100" cy="200" r="9" fill="#2563eb"/>
+  <circle cx="180" cy="200" r="9" fill="#2563eb"/>
+  <circle cx="260" cy="200" r="9" fill="#2563eb"/>
+  <circle cx="340" cy="200" r="9" fill="#2563eb"/>
+  <circle cx="620" cy="200" r="11" fill="#16a34a"/>
+  <circle cx="700" cy="200" r="9" fill="#2563eb"/>
+  <circle cx="770" cy="200" r="9" fill="#2563eb"/>
+
+  <text class="t n" x="100" y="232" text-anchor="middle">저장소 초기설정</text>
+  <text class="t n" x="180" y="232" text-anchor="middle">메뉴 기능</text>
+  <text class="t n" x="260" y="232" text-anchor="middle">Quiz 클래스</text>
+  <text class="t n" x="340" y="232" text-anchor="middle">state.json 저장</text>
+  <text class="t n" x="620" y="245" text-anchor="middle" fill="#16a34a" font-weight="700">🔀 Merge</text>
+  <text class="t n" x="620" y="263" text-anchor="middle" fill="#16a34a">병합 커밋</text>
+  <text class="t n" x="700" y="232" text-anchor="middle">퀴즈 추가</text>
+  <text class="t n" x="775" y="232" text-anchor="middle">README</text>
+
+  <!-- 브랜치 선 -->
+  <path d="M340 200 C 380 200, 390 110, 440 110" stroke="#d97706" stroke-width="3.5" fill="none"/>
+  <line x1="440" y1="110" x2="560" y2="110" stroke="#d97706" stroke-width="3.5"/>
+  <path d="M560 110 C 600 110, 590 200, 620 200" stroke="#d97706" stroke-width="3.5" fill="none"/>
+
+  <circle cx="450" cy="110" r="9" fill="#d97706"/>
+  <circle cx="550" cy="110" r="9" fill="#d97706"/>
+  <text class="t h" x="500" y="70" text-anchor="middle" fill="#92400e">feature/play-quiz</text>
+  <text class="t n" x="450" y="142" text-anchor="middle">퀴즈 풀기 구현</text>
+  <text class="t n" x="565" y="142" text-anchor="middle">랜덤·문제수·힌트 추가</text>
+
+  <text class="t d" x="345" y="165" text-anchor="middle">checkout -b</text>
+  <text class="t d" x="345" y="181" text-anchor="middle">← 여기서 갈라짐</text>
+
+  <!-- 설명 박스 -->
+  <rect x="60" y="278" width="740" height="42" rx="10" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text class="t d" x="430" y="304" text-anchor="middle">
+    핵심 기능인 “퀴즈 풀기”를 별도 브랜치에서 만들고, 완성·검증 후 main으로 병합했습니다. 작업 중에도 main은 항상 정상 동작 상태였습니다.
+  </text>
+</svg>
+<figcaption>그림 8 — 갈라져 나가서(checkout -b) 따로 만들고, 검증 후 다시 합친다(merge). 실제 <code>git log --graph</code>에서 이 모양이 보인다</figcaption>
+</figure>
+
+<div class="term">
+  <div class="head">.gitignore <span class="tag">기록하지 말 것 목록</span></div>
+  <div class="row"><div class="k">뜻</div><div class="v">Git이 <b>추적하지 않을 파일 목록</b>을 적어두는 파일입니다.</div></div>
+  <div class="row"><div class="k">비유</div><div class="v">사진 백업할 때 “스크린샷 폴더는 빼고”라고 설정하는 것과 같습니다. 굳이 백업할 필요 없는 것들을 제외합니다.</div></div>
+  <div class="row"><div class="k">내 프로젝트</div><div class="v"><code>__pycache__/</code>(파이썬이 자동 생성하는 임시 파일), <code>.DS_Store</code>(맥이 만드는 숨김 파일), <code>state.json</code>(실행하면 자동 생성되는 개인 데이터)</div></div>
+  <div class="row"><div class="k">state.json을 뺀 이유</div><div class="v">이건 <b>사람마다 다른 개인 플레이 기록</b>입니다. 코드가 아니라 실행 결과물이라 저장소에 올릴 이유가 없고, 없어도 프로그램이 기본 퀴즈로 알아서 시작하도록 만들었습니다.</div></div>
+  <div class="row say"><div class="k">💬 한마디</div><div class="v">“<code>.gitignore</code>는 버전 관리에서 제외할 파일을 지정합니다. 임시 파일과 개인 실행 기록인 <code>state.json</code>을 제외해서, 저장소에는 코드와 문서만 남도록 했습니다.”</div></div>
+</div>
+
+<h4>내가 실제로 쓴 명령어 (7종 전부 사용 확인)</h4>
+<div class="scroll"><table>
+<tr><th>명령어</th><th>내가 실행한 것</th><th>사용 시점</th></tr>
+<tr><td><code>init</code></td><td><code>git init</code></td><td>맨 처음 저장소를 만들 때 1회</td></tr>
+<tr><td><code>add</code></td><td><code>git add main.py</code></td><td>커밋 17회마다 매번</td></tr>
+<tr><td><code>commit</code></td><td><code>git commit -m "Feat: 퀴즈 출제 기능 구현"</code></td><td>총 17회</td></tr>
+<tr><td><code>push</code></td><td><code>git push origin main</code></td><td>기능 완성 시마다</td></tr>
+<tr><td><code>checkout</code></td><td><code>git checkout -b feature/play-quiz</code></td><td>퀴즈 풀기 기능 개발 전</td></tr>
+<tr><td><code>merge</code></td><td><code>git merge feature/play-quiz</code></td><td>퀴즈 풀기 완성 후 main으로 병합</td></tr>
+<tr><td><code>clone</code></td><td><code>git clone https://github.com/ellysuh22/2-homework.git</code></td><td>복제 실습 단계</td></tr>
+<tr><td><code>pull</code></td><td><code>git pull origin main</code></td><td>clone한 폴더에서 push한 뒤, 원본 폴더에서</td></tr>
+</table></div>
+
+
+<!-- ══════════════════ 6 ══════════════════ -->
+<h2 id="s6"><span class="num">6.</span> 프로그램이 실제로 도는 순서</h2>
+<p class="lead">평가자가 “실행하면 무슨 일이 일어나나요?”라고 물으면 이 순서대로 말하면 됩니다.</p>
+
+<figure>
+<svg viewBox="0 0 860 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="프로그램 실행 흐름도">
+  <style>
+    .t{font-family:-apple-system,'Apple SD Gothic Neo',sans-serif}
+    .d{font-size:13px;fill:#1a1a1a}
+    .s{font-size:11.5px;fill:#5b6472}
+    .h{font-size:14px;font-weight:700}
+  </style>
+  <rect width="860" height="520" fill="#fff"/>
+  <defs>
+    <marker id="f1" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#475569"/></marker>
+  </defs>
+
+  <!-- 1 -->
+  <rect x="290" y="20" width="280" height="46" rx="23" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text class="t d" x="430" y="42" text-anchor="middle" font-weight="700">python3 main.py 실행</text>
+  <text class="t s" x="430" y="58" text-anchor="middle">main() 함수가 시작점</text>
+  <path d="M430 68 L430 86" stroke="#475569" stroke-width="2" marker-end="url(#f1)"/>
+
+  <!-- 2 -->
+  <rect x="255" y="88" width="350" height="62" rx="12" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text class="t d" x="430" y="110" text-anchor="middle" font-weight="700">load_state() — state.json 읽기</text>
+  <text class="t s" x="430" y="128" text-anchor="middle">파일 있음 → 저장된 퀴즈·점수 불러오기</text>
+  <text class="t s" x="430" y="144" text-anchor="middle">없음/손상 → 기본 퀴즈 5개로 시작 (안내 출력)</text>
+  <path d="M430 152 L430 170" stroke="#475569" stroke-width="2" marker-end="url(#f1)"/>
+
+  <!-- 3 반복 시작 -->
+  <rect x="255" y="172" width="350" height="46" rx="12" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+  <text class="t d" x="430" y="194" text-anchor="middle" font-weight="700">run() — 메뉴 반복 시작 (while)</text>
+  <text class="t s" x="430" y="211" text-anchor="middle">메뉴 출력 → 번호 입력 → 기능 실행 → 다시 메뉴</text>
+  <path d="M430 220 L430 240" stroke="#475569" stroke-width="2" marker-end="url(#f1)"/>
+
+  <!-- 분기 -->
+  <rect x="255" y="242" width="350" height="40" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+  <text class="t d" x="430" y="267" text-anchor="middle" font-weight="700">input_int("선택: ", 1, 6) — 검증된 번호 받기</text>
+
+  <!-- 6갈래 -->
+  <g>
+    <rect x="20" y="315" width="128" height="72" rx="10" fill="#fff" stroke="#94a3b8" stroke-width="1.5"/>
+    <text class="t h" x="84" y="338" text-anchor="middle">1 퀴즈 풀기</text>
+    <text class="t s" x="84" y="357" text-anchor="middle">몇 문제 선택 →</text>
+    <text class="t s" x="84" y="373" text-anchor="middle">랜덤 출제 → 채점</text>
+
+    <rect x="158" y="315" width="128" height="72" rx="10" fill="#fff" stroke="#94a3b8" stroke-width="1.5"/>
+    <text class="t h" x="222" y="338" text-anchor="middle">2 퀴즈 추가</text>
+    <text class="t s" x="222" y="357" text-anchor="middle">문제·선택지4·정답</text>
+    <text class="t s" x="222" y="373" text-anchor="middle">입력 후 저장</text>
+
+    <rect x="296" y="315" width="128" height="72" rx="10" fill="#fff" stroke="#94a3b8" stroke-width="1.5"/>
+    <text class="t h" x="360" y="338" text-anchor="middle">3 퀴즈 목록</text>
+    <text class="t s" x="360" y="357" text-anchor="middle">번호와 함께</text>
+    <text class="t s" x="360" y="373" text-anchor="middle">전체 출력</text>
+
+    <rect x="434" y="315" width="128" height="72" rx="10" fill="#fff" stroke="#94a3b8" stroke-width="1.5"/>
+    <text class="t h" x="498" y="338" text-anchor="middle">4 퀴즈 삭제</text>
+    <text class="t s" x="498" y="357" text-anchor="middle">번호 선택 →</text>
+    <text class="t s" x="498" y="373" text-anchor="middle">삭제 후 저장</text>
+
+    <rect x="572" y="315" width="128" height="72" rx="10" fill="#fff" stroke="#94a3b8" stroke-width="1.5"/>
+    <text class="t h" x="636" y="338" text-anchor="middle">5 점수 확인</text>
+    <text class="t s" x="636" y="357" text-anchor="middle">최고 점수 +</text>
+    <text class="t s" x="636" y="373" text-anchor="middle">최근 기록 5회</text>
+
+    <rect x="710" y="315" width="130" height="72" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+    <text class="t h" x="775" y="338" text-anchor="middle" fill="#991b1b">6 종료</text>
+    <text class="t s" x="775" y="357" text-anchor="middle">인사 출력 후</text>
+    <text class="t s" x="775" y="373" text-anchor="middle">반복 탈출(break)</text>
+  </g>
+
+  <path d="M300 284 L84 284 L84 311" stroke="#475569" stroke-width="1.5" fill="none" marker-end="url(#f1)"/>
+  <path d="M330 284 L222 284 L222 311" stroke="#475569" stroke-width="1.5" fill="none" marker-end="url(#f1)"/>
+  <path d="M380 284 L360 284 L360 311" stroke="#475569" stroke-width="1.5" fill="none" marker-end="url(#f1)"/>
+  <path d="M470 284 L498 284 L498 311" stroke="#475569" stroke-width="1.5" fill="none" marker-end="url(#f1)"/>
+  <path d="M520 284 L636 284 L636 311" stroke="#475569" stroke-width="1.5" fill="none" marker-end="url(#f1)"/>
+  <path d="M560 284 L775 284 L775 311" stroke="#475569" stroke-width="1.5" fill="none" marker-end="url(#f1)"/>
+
+  <!-- 저장 -->
+  <rect x="130" y="425" width="440" height="42" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text class="t d" x="350" y="451" text-anchor="middle">💾 데이터가 바뀌는 기능(1·2·4)은 끝나자마자 save_state()로 파일에 기록</text>
+  <path d="M84 391 L84 446 L126 446" stroke="#16a34a" stroke-width="1.5" fill="none" marker-end="url(#f1)"/>
+  <path d="M222 391 L222 425" stroke="#16a34a" stroke-width="1.5" fill="none" marker-end="url(#f1)"/>
+  <path d="M498 391 L498 425" stroke="#16a34a" stroke-width="1.5" fill="none" marker-end="url(#f1)"/>
+
+  <!-- 되돌아가기 -->
+  <path d="M575 446 L820 446 L820 195 L610 195" stroke="#d97706" stroke-width="2" fill="none" marker-end="url(#f1)"/>
+  <text class="t s" x="828" y="330" text-anchor="middle" fill="#92400e" transform="rotate(90 828 330)">메뉴로 다시 돌아감</text>
+
+  <!-- 종료 -->
+  <rect x="640" y="425" width="200" height="42" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text class="t d" x="740" y="451" text-anchor="middle" fill="#991b1b">프로그램 종료 👋</text>
+  <path d="M775 391 L775 421" stroke="#dc2626" stroke-width="1.5" fill="none" marker-end="url(#f1)"/>
+
+  <!-- 예외 -->
+  <rect x="20" y="480" width="820" height="32" rx="8" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"/>
+  <text class="t s" x="430" y="501" text-anchor="middle">⚠️ 어느 시점에든 Ctrl+C를 누르면 → 안내 메시지 출력 → save_state()로 저장 → 안전하게 종료 (프로그램이 오류로 죽지 않음)</text>
+</svg>
+<figcaption>그림 9 — 실행부터 종료까지의 전체 흐름. “불러오기 → 메뉴 반복 → 저장 → 종료”가 뼈대</figcaption>
+</figure>
+
+<h3>보너스 기능 5개 (선택 과제인데 전부 구현함)</h3>
+<div class="scroll"><table>
+<tr><th>보너스</th><th>어떻게 구현했나</th><th>설명 포인트</th></tr>
+<tr><td><b>랜덤 출제</b></td><td><code>random.sample(self.quizzes, total)</code></td><td>목록에서 겹치지 않게 뽑아서 순서도 섞습니다. 같은 문제가 두 번 나오지 않습니다.</td></tr>
+<tr><td><b>문제 수 선택</b></td><td>시작 전 “몇 문제를 푸시겠습니까?”</td><td>1~등록된 개수 사이만 허용하도록 검증합니다.</td></tr>
+<tr><td><b>힌트</b></td><td>정답 입력창에서 <code>5</code>를 누르면 표시</td><td>힌트를 1회 볼 때마다 5점 차감. 점수가 음수가 되지 않게 <code>max(0, …)</code>로 막았습니다.</td></tr>
+<tr><td><b>퀴즈 삭제</b></td><td>메뉴 4번, <code>list.pop()</code> 후 저장</td><td>삭제 후 곧바로 파일에 반영합니다.</td></tr>
+<tr><td><b>점수 히스토리</b></td><td>매 게임마다 날짜·문제수·정답수·점수 기록</td><td>최고 점수뿐 아니라 전체 기록을 남기고, 최근 5회를 보여줍니다.</td></tr>
+</table></div>
+
+<h4>점수 계산식 설명</h4>
+<pre><code>score = max(0, round(correct / total * 100) - hint_count * 5)</code></pre>
+<p><b>풀어서 읽으면:</b> “맞힌 개수 ÷ 푼 개수 × 100”으로 100점 만점 환산하고(<code>round</code>는 반올림),
+힌트를 본 횟수만큼 5점씩 뺀 뒤, <code>max(0, …)</code>로 <b>아무리 빼도 0점 아래로는 안 내려가게</b> 막았습니다.
+예: 5문제 중 4개 정답에 힌트 1회 → 80 − 5 = <b>75점</b>.</p>
+
+
+<!-- ══════════════════ 7 ══════════════════ -->
+<h2 id="s7"><span class="num">7.</span> 평가자 예상 질문 20개 + 답변 대본</h2>
+<p class="lead">그대로 읽어도 되도록 답변을 문장으로 써두었습니다. 소리 내어 한 번씩 읽어보세요.</p>
+
+<div class="qa"><div class="q">Q1. 이 프로그램이 뭐 하는 건지 30초로 설명해주세요.</div><div class="a">
+터미널에서 실행하는 4지선다 퀴즈 게임입니다. 메뉴에서 번호를 고르면 퀴즈 풀기, 추가, 목록, 삭제, 점수 확인을 할 수 있습니다.
+파이썬 기초 문법을 주제로 기본 문제 5개를 넣어뒀고, 사용자가 문제를 더 추가할 수 있습니다.
+추가한 문제와 최고 점수는 <code>state.json</code> 파일에 저장돼서 프로그램을 껐다 켜도 그대로 유지됩니다.
+</div></div>
+
+<div class="qa"><div class="q">Q2. 왜 퀴즈 주제를 “파이썬 기초 문법”으로 골랐나요?</div><div class="a">
+이번 과제에서 제가 직접 쓴 개념들 — 리스트, 불린, <code>__init__</code>, 딕셔너리, 반복문 — 을 그대로 문제로 만들었습니다.
+프로그램을 만들면서 쓴 문법이 곧 문제가 되니까, <b>완성하는 과정 자체가 복습</b>이 되도록 주제를 골랐습니다.
+</div></div>
+
+<div class="qa"><div class="q">Q3. 클래스를 왜 2개로 나눴나요? 하나면 안 되나요?</div><div class="a">
+가능은 하지만 관리가 어려워집니다. <b>Quiz</b>는 문제 한 개가 가진 정보와 그 문제 하나에 대한 동작만 담당하고,
+<b>QuizGame</b>은 메뉴 흐름·채점·저장 같은 게임 전체를 담당합니다.
+이렇게 나누면 문제 형식을 바꿀 때는 Quiz만, 메뉴를 바꿀 때는 QuizGame만 고치면 되기 때문에
+<b>어디를 고쳐야 할지 명확</b>하고 서로 영향을 주지 않습니다.
+</div></div>
+
+<div class="qa"><div class="q">Q4. <code>__init__</code>과 <code>self</code>가 뭔가요?</div><div class="a">
+<code>__init__</code>은 <b>생성자</b>입니다. 객체가 만들어지는 순간 자동으로 한 번 실행돼서 초기값을 채워 넣습니다.
+아기가 태어날 때 출생신고서를 쓰는 것과 같습니다.<br>
+<code>self</code>는 <b>“나 자신”</b>이라는 뜻으로, 그 메서드를 부른 객체 자기 자신을 가리킵니다.
+퀴즈가 6개 있어도 출력 코드는 한 벌만 있으면 되는데, <code>self.question</code>이라고 쓰면 부른 쪽 퀴즈의 문제가 자동으로 들어가기 때문입니다.
+</div></div>
+
+<div class="qa"><div class="q">Q5. list와 dict의 차이를 설명해보세요.</div><div class="a">
+둘 다 여러 값을 담지만 <b>꺼내는 방법</b>이 다릅니다. list는 순서가 있어서 “몇 번째 것”으로 꺼내고,
+dict는 이름표(키)를 붙여서 “무슨 이름의 것”으로 꺼냅니다.
+제 프로그램에서 선택지 4개는 1·2·3·4번 순서가 중요해서 list로 만들었고,
+게임 기록은 날짜·문제수·점수처럼 항목마다 이름이 필요해서 dict로 저장했습니다.
+</div></div>
+
+<div class="qa"><div class="q">Q6. for와 while은 언제 각각 쓰나요?</div><div class="a">
+반복 횟수를 <b>아는</b> 경우는 for, <b>모르는</b> 경우는 while을 씁니다.
+문제 5개를 하나씩 출제하는 건 개수를 아니까 for를 썼고,
+사용자가 올바른 숫자를 언제 입력할지는 모르니까 입력 검증은 while로 “맞을 때까지” 반복하게 만들었습니다.
+</div></div>
+
+<div class="qa"><div class="q">Q7. 왜 JSON으로 저장했나요? 그냥 텍스트 파일은 안 되나요?</div><div class="a">
+가능하지만 불편합니다. 그냥 텍스트로 저장하면 나중에 읽을 때 어디까지가 문제고 어디부터가 선택지인지 <b>직접 잘라내는 코드를 짜야</b> 합니다.
+JSON은 이름과 값을 짝지어 적는 표준 형식이라 파이썬이 <code>json.load()</code> 한 줄로 알아서 읽어줍니다.
+파이썬 딕셔너리와 구조가 같아서 변환도 쉽고, 파일을 열어보면 사람도 읽을 수 있습니다.
+</div></div>
+
+<div class="qa"><div class="q">Q8. 저장은 정확히 언제 되나요?</div><div class="a">
+데이터가 바뀌는 순간마다 바로 저장합니다. 퀴즈를 추가했을 때, 삭제했을 때, 게임을 한 판 끝냈을 때입니다.
+그리고 <code>Ctrl+C</code>로 중단해도 종료 직전에 한 번 더 저장합니다.
+<b>종료할 때만 저장하면 갑자기 꺼졌을 때 다 날아가기 때문에</b>, 바뀔 때마다 저장하는 방식을 택했습니다.
+</div></div>
+
+<div class="qa"><div class="q">Q9. UTF-8은 왜 지정했나요?</div><div class="a">
+인코딩은 글자를 저장할 숫자로 바꾸는 약속인데, 읽을 때와 쓸 때 약속이 다르면 한글이 깨집니다.
+문제가 전부 한글이라 읽기·쓰기 모두 <code>encoding="utf-8"</code>로 통일했습니다.
+추가로 <code>ensure_ascii=False</code> 옵션을 줘서 파일을 열었을 때 한글이 코드가 아니라 글자 그대로 보이게 했습니다.
+</div></div>
+
+<div class="qa"><div class="q">Q10. (직접 <code>abc</code>를 입력해보며) 이건 어떻게 처리했나요?</div><div class="a">
+숫자가 필요한 모든 곳에서 <code>input_int()</code>라는 함수 하나를 씁니다. 이 함수가 네 가지를 순서대로 검사합니다.
+① 앞뒤 공백 제거 ② 빈 입력인지 ③ 숫자로 바꿀 수 있는지 ④ 허용 범위 안인지.
+하나라도 실패하면 안내 메시지를 출력하고 <b>다시 입력받는 자리로 돌아갑니다</b>. 프로그램은 절대 종료되지 않습니다.
+</div></div>
+
+<div class="qa"><div class="q">Q11. 저장 파일이 깨지면 어떻게 되나요?</div><div class="a">
+<code>try/except</code>로 감싸놨습니다. 파일이 깨졌거나, 형식이 이상하거나, 필요한 항목이 없는 경우를 전부 잡아서
+“⚠️ 저장 파일이 손상되어 기본 퀴즈로 복구합니다”를 출력하고 <b>기본 퀴즈 5개로 정상 실행</b>합니다.
+파일이 아예 없는 경우도 마찬가지로 기본 퀴즈로 시작합니다. 직접 파일을 지우거나 망가뜨려서 확인해보셔도 됩니다.
+</div></div>
+
+<div class="qa"><div class="q">Q12. Git이 뭐고 왜 쓰나요?</div><div class="a">
+코드의 변경 이력을 기록하고 원하는 시점으로 되돌릴 수 있게 해주는 도구입니다. <b>게임의 세이브 파일</b>과 같습니다.
+Git이 없으면 “최종”, “진짜최종”, “진짜최종_수정” 같은 파일이 쌓여서 뭐가 최신인지 알 수 없게 됩니다.
+저는 기능 하나를 완성할 때마다 커밋해서 총 17개의 기록을 남겼습니다.
+</div></div>
+
+<div class="qa"><div class="q">Q13. add와 commit은 뭐가 다른가요?</div><div class="a">
+<b>add</b>는 이번에 기록할 파일을 <b>장바구니에 담는 것</b>이고, <b>commit</b>은 <b>계산해서 영수증을 받는 것</b>입니다.
+add 단계가 따로 있는 이유는, 파일을 여러 개 고쳤더라도 관련 있는 것만 골라 담아서
+<b>커밋을 의미 있는 단위로 나눌 수 있게</b> 하기 위해서입니다.
+</div></div>
+
+<div class="qa"><div class="q">Q14. commit과 push의 차이는요?</div><div class="a">
+<b>commit</b>은 내 컴퓨터 안에만 저장되고, <b>push</b>는 그 기록을 GitHub(인터넷)에 올립니다.
+커밋만 하고 push를 안 하면 GitHub에는 아무것도 없습니다. 제출이 GitHub 주소로 이뤄지니 push가 꼭 필요합니다.
+</div></div>
+
+<div class="qa"><div class="q">Q15. clone과 pull은 어떻게 다른가요?</div><div class="a">
+<b>clone</b>은 저장소를 이력까지 통째로 <b>처음 한 번</b> 내려받는 것이고,
+<b>pull</b>은 이미 받아둔 것을 <b>최신 상태로 갱신</b>하는 것입니다.
+앱을 처음 설치하는 게 clone, 이미 깔린 앱을 업데이트하는 게 pull이라고 보면 됩니다.
+</div></div>
+
+<div class="qa"><div class="q">Q16. 브랜치는 왜 썼나요? 혼자 하는데 필요한가요?</div><div class="a">
+혼자 해도 필요합니다. 브랜치는 <b>원본을 건드리지 않고 따로 실험하는 공간</b>이라,
+새 기능을 만들다 망가뜨려도 main은 항상 정상 상태로 남습니다.
+저는 이 프로그램에서 가장 복잡한 “퀴즈 풀기” 기능을 <code>feature/play-quiz</code> 브랜치에서 만들고,
+랜덤·문제 수 선택·힌트까지 붙여서 정상 동작을 확인한 뒤 main에 병합했습니다.
+</div></div>
+
+<div class="qa"><div class="q">Q17. 커밋 메시지를 왜 그렇게 썼나요?</div><div class="a">
+나중에 이력만 봐도 무슨 작업을 했는지 알 수 있게 하려고 규칙을 정했습니다.
+새 기능은 <code>Feat:</code>, 오류 수정은 <code>Fix:</code>, 문서는 <code>Docs:</code>, 코드 정리는 <code>Refactor:</code>를 앞에 붙였습니다.
+“수정”처럼만 쓰면 일주일 뒤에 제가 봐도 뭘 고쳤는지 모르기 때문입니다.
+</div></div>
+
+<div class="qa"><div class="q">Q18. <code>.gitignore</code>에 <code>state.json</code>을 넣은 이유는요?</div><div class="a">
+<code>state.json</code>은 코드가 아니라 <b>실행하면 자동으로 만들어지는 개인 플레이 기록</b>입니다.
+사람마다 다른 데이터라 저장소에 올릴 이유가 없고, 파일이 없어도 프로그램이 기본 퀴즈로 알아서 시작하도록 만들었기 때문에
+제외해도 아무 문제가 없습니다. 저장소에는 코드와 문서만 남습니다.
+</div></div>
+
+<div class="qa"><div class="q">Q19. 외부 라이브러리를 안 쓴 게 맞나요?</div><div class="a">
+네. <code>json</code>, <code>os</code>, <code>random</code>, <code>datetime</code> 네 가지만 썼는데 전부 <b>파이썬에 기본 포함된 표준 라이브러리</b>입니다.
+따로 <code>pip install</code>로 설치한 것은 없어서, 파이썬 3.10 이상만 있으면 어느 컴퓨터에서든 바로 실행됩니다.
+</div></div>
+
+<div class="qa"><div class="q">Q20. 만들면서 가장 어려웠던 점은 뭐였나요?</div><div class="a">
+<b>저장과 불러오기</b>였습니다. 파이썬 객체는 파일에 그대로 쓸 수 없어서,
+객체 → 딕셔너리 → JSON 글자로 바꿔서 저장하고, 불러올 때는 정확히 반대 순서로 되돌려야 했습니다.
+이걸 <code>to_dict()</code>와 <code>from_dict()</code>라는 짝을 이루는 메서드로 만들어 해결했고,
+이 과정에서 “객체는 메모리에만 있고, 파일에 남기려면 변환이 필요하다”는 걸 이해하게 됐습니다.
+</div></div>
+
+
+<!-- ══════════════════ 8 ══════════════════ -->
+<h2 id="s8"><span class="num">8.</span> 제출 전 최종 체크리스트</h2>
+<p class="lead">과제 요구사항과 현재 상태를 하나씩 대조했습니다.</p>
+
+<h3>동작하는 퀴즈 게임</h3>
+<ul class="check">
+  <li><span class="box">✓</span><span>메뉴에서 번호 선택 → 각 화면 출력 <b>(1~6번 전부 동작)</b></span></li>
+  <li><span class="box">✓</span><span>퀴즈 풀기 / 추가 / 목록 / 점수 확인 동작 <b>(+ 삭제까지 구현)</b></span></li>
+  <li><span class="box">✓</span><span>본인 주제 퀴즈 5개 이상 <b>(파이썬 기초 문법 5문제)</b></span></li>
+  <li><span class="box">✓</span><span>껐다 켜도 추가한 퀴즈·최고 점수 유지 <b>(state.json)</b></span></li>
+</ul>
+
+<h3>코드 구조</h3>
+<ul class="check">
+  <li><span class="box">✓</span><span>클래스 2개 이상 <b>(Quiz, QuizGame)</b></span></li>
+  <li><span class="box">✓</span><span>기능별 메서드 분리 <b>(입력 검증 / 게임 진행 / 저장 로직 각각 분리)</b></span></li>
+  <li><span class="box">✓</span><span>프로젝트 루트 <code>state.json</code>에 UTF-8로 저장·불러오기</span></li>
+  <li><span class="box">✓</span><span>외부 라이브러리 없음 <b>(json · os · random · datetime — 전부 표준)</b></span></li>
+</ul>
+
+<h3>입력·예외 처리</h3>
+<ul class="check">
+  <li><span class="box">✓</span><span>앞뒤 공백 제거 / 숫자 변환 실패 / 범위 밖 / 빈 입력 — 4가지 전부 처리</span></li>
+  <li><span class="box">✓</span><span>Ctrl+C·EOFError 발생 시 안내 후 <b>저장하고</b> 안전 종료</span></li>
+  <li><span class="box">✓</span><span>파일 없음 → 기본 퀴즈 / 파일 손상 → 안내 후 기본 퀴즈로 복구</span></li>
+</ul>
+
+<h3>GitHub 저장소</h3>
+<ul class="check">
+  <li><span class="box">✓</span><span>코드 업로드 완료 — <code>github.com/ellysuh22/2-homework</code></span></li>
+  <li><span class="box">✓</span><span>의미 있는 커밋 <b>17개</b> (요구 10개 이상)</span></li>
+  <li><span class="box">✓</span><span>브랜치 생성 + 병합 기록 <b>(feature/play-quiz → main)</b></span></li>
+  <li><span class="box">✓</span><span>clone·pull 실습 기록</span></li>
+  <li><span class="box">✓</span><span>README에 6개 항목 전부 포함 (개요 / 주제 선정 이유 / 실행 방법 / 기능 / 파일 구조 / 데이터 파일)</span></li>
+</ul>
+
+<h3>⚠️ 아직 남은 것 — 스크린샷</h3>
+<ul class="check">
+  <li class="todo"><span class="box">□</span><span><b>개발 환경 스크린샷</b> — VSCode 화면, <code>python3 --version</code>, <code>git --version</code> 결과</span></li>
+  <li class="todo"><span class="box">□</span><span><b>실행 결과 스크린샷 4장</b> — <code>docs/screenshots/</code>에 menu.png, play.png, add_quiz.png, score.png</span></li>
+  <li class="todo"><span class="box">□</span><span><b>커밋 그래프 스크린샷</b> — <code>git log --oneline --graph</code> 결과 (브랜치 갈라졌다 합쳐지는 모양이 보이게)</span></li>
+</ul>
+
+<div class="callout tip">
+  <b>📸 스크린샷 찍을 때 순서 (이대로 하면 4장 다 나옵니다)</b>
+  ① 프로그램 실행 → 메뉴 화면에서 캡처 <b>(menu.png)</b><br>
+  ② <code>2</code> 입력 → 퀴즈 추가 완료 화면 캡처 <b>(add_quiz.png)</b><br>
+  ③ <code>1</code> 입력 → 문제 풀고 결과 화면까지 캡처 <b>(play.png)</b><br>
+  ④ <code>5</code> 입력 → 최고 점수·기록 화면 캡처 <b>(score.png)</b><br>
+  맥에서 화면 일부 캡처는 <code>Shift + Command + 4</code>입니다.
+</div>
+
+<div class="callout note">
+  <b>🎤 발표 3분 대본 (이 순서로 말하면 됩니다)</b>
+  ① <b>무엇을 만들었나</b> — “터미널에서 도는 4지선다 퀴즈 게임입니다. 파이썬 기초 문법을 주제로 골랐습니다.”<br>
+  ② <b>구조</b> — “문제 하나를 담당하는 Quiz와 게임 전체를 담당하는 QuizGame, 두 클래스로 역할을 나눴습니다.”<br>
+  ③ <b>데이터 저장</b> — “퀴즈와 점수를 state.json에 UTF-8 JSON으로 저장해서, 껐다 켜도 유지됩니다. 객체를 딕셔너리로 바꾼 뒤 JSON으로 쓰고, 불러올 때는 반대로 되돌립니다.”<br>
+  ④ <b>예외 처리</b> — “숫자가 아닌 입력, 범위 밖, 빈 입력, Ctrl+C, 파일 손상까지 전부 처리해서 어떤 경우에도 프로그램이 비정상 종료되지 않습니다.” <span style="color:#7c3aed">← 여기서 직접 abc를 쳐서 보여주면 인상적입니다</span><br>
+  ⑤ <b>Git</b> — “기능 단위로 17개 커밋을 남겼고, 가장 복잡한 퀴즈 풀기 기능은 별도 브랜치에서 만들어 검증 후 main에 병합했습니다. clone·pull 실습도 했습니다.”<br>
+  ⑥ <b>보너스</b> — “선택 과제인 랜덤 출제, 문제 수 선택, 힌트, 삭제, 점수 히스토리 5가지를 모두 구현했습니다.”
+</div>
+
+</div>
+</body>
+</html>
