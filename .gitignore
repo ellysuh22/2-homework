@@ -14,3 +14,9 @@ state.json
 PASS_Answer.md
 미션2_평가기준.txt
 docs/과제-설명서.html
+
+# 문서 자동 백업 (로컬 전용)
+.backup/
+
+# 스크린샷 정리용 개인 도구
+shot.sh

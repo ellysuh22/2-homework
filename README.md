@@ -27,7 +27,7 @@
 | Python 기본 문법으로 입출력 흐름 만들기 | 메뉴 반복 → 입력 검증 → 기능 실행 ([main.py:308-326](main.py#L308-L326)) |
 | 클래스로 코드를 역할별로 구조화 | `Quiz`(문제 한 장) / `QuizGame`(게임 진행) 2개 클래스로 분리 |
 | JSON 파일 저장으로 **데이터 영속성** 경험 | 종료 후 재실행해도 퀴즈·최고 점수 유지 (`state.json`) |
-| Git으로 변경 이력 관리 | 기능 단위 17커밋, 브랜치 생성 → 병합, GitHub 공개 |
+| Git으로 변경 이력 관리 | 기능 단위 18커밋, 브랜치 생성 → 병합, GitHub 공개 |
 
 > 💡 **데이터 영속성(persistence)** — 프로그램을 꺼도 데이터가 사라지지 않고 남아 있는 성질.
 > 변수는 프로그램이 끝나면 사라지므로, 파일에 적어두어야 다음 실행 때 이어서 쓸 수 있습니다.
@@ -350,7 +350,7 @@ except (KeyboardInterrupt, EOFError):
 ## 12. Git 커밋·브랜치·병합·clone·pull 수행 내용
 
 - **저장소**: https://github.com/ellysuh22/2-homework
-- **커밋 수**: 17개 (요구 기준 10개 이상)
+- **커밋 수**: 18개 (요구 기준 10개 이상)
 - **커밋 메시지 규칙**: `종류: 요약` — `Feat:` 새 기능 / `Fix:` 버그 수정 / `Docs:` 문서 / `Refactor:` 구조 정리 / `Chore:` 설정
 - **커밋 단위**: **기능 하나 완성 = 커밋 1개**. 그래야 `git log`가 개발 일기가 되고,
   문제가 생겼을 때 그 기능이 들어온 커밋으로 되돌아가 원인을 좁힐 수 있습니다.
@@ -408,6 +408,7 @@ $ git log --oneline --graph --all --decorate
 | 15 | [`035cbde`](https://github.com/ellysuh22/2-homework/commit/035cbde) | Refactor: QuizGame 입력 처리 정리 및 불필요한 분기 제거 | 2-2, 2-5 |
 | 16 | [`6934ef3`](https://github.com/ellysuh22/2-homework/commit/6934ef3) | Docs: README 작성 (개요/주제 선정 이유/실행 방법/기능/구조/데이터 파일) | 1-5 |
 | 17 | [`3bf2517`](https://github.com/ellysuh22/2-homework/commit/3bf2517) | Docs: clone 실습으로 README에 동기화 안내 문구 추가 | **1-7** |
+| 18 | [`334e62f`](https://github.com/ellysuh22/2-homework/commit/334e62f) | Docs: README 링크 정리 및 스크린샷 폴더 추가 | 1-5, 1-7 |
 
 ### clone / pull 실습
 
@@ -480,18 +481,18 @@ $ git log --oneline --graph --all --decorate
 
 | 파일 | 내용 | 미션 근거 | 상태 |
 | --- | --- | --- | --- |
-| `docs/screenshots/dev_env.png` | VSCode·Python 버전·Git 설정 | 제출물 | ⚠️ 미첨부 |
-| `docs/screenshots/menu.png` | 메뉴 화면 (1-1) | 체크리스트 | ⚠️ 미첨부 |
-| `docs/screenshots/add_quiz.png` | 퀴즈 추가 (1-1) | 제출물·체크리스트 | ⚠️ 미첨부 |
-| `docs/screenshots/list.png` | 퀴즈 목록 (1-1) | 제출물 | ⚠️ 미첨부 |
-| `docs/screenshots/play.png` | 퀴즈 풀기 정답·오답 (1-2) | 제출물·체크리스트 | ⚠️ 미첨부 |
-| `docs/screenshots/score.png` | 점수 확인 (1-1) | 제출물·체크리스트 | ⚠️ 미첨부 |
-| `docs/screenshots/git_graph.png` | `git log --oneline --graph` (1-6) | 제출물 | ⚠️ 미첨부 |
+| [`dev_env.png`](docs/screenshots/dev_env.png) | VSCode·Python 버전·Git 설정 | 제출물 | ✅ 첨부 |
+| [`menu.png`](docs/screenshots/menu.png) | 메뉴 화면 (1-1) | 체크리스트 | ✅ 첨부 |
+| [`add_quiz.png`](docs/screenshots/add_quiz.png) | 퀴즈 추가 (1-1) | 제출물·체크리스트 | ✅ 첨부 |
+| [`list.png`](docs/screenshots/list.png) | 퀴즈 목록 (1-1) | 제출물 | ✅ 첨부 |
+| [`play.png`](docs/screenshots/play.png) | 퀴즈 풀기 정답·오답 (1-2) | 제출물·체크리스트 | ✅ 첨부 |
+| [`score.png`](docs/screenshots/score.png) | 점수 확인 (1-1) | 제출물·체크리스트 | ✅ 첨부 |
+| [`git_graph.png`](docs/screenshots/git_graph.png) | `git log --oneline --graph` (1-6) | 제출물 | ✅ 첨부 |
 | `docs/screenshots/invalid_input.png` | 잘못된 입력 4종 (1-2) | 보강 자료 | ⚠️ 미첨부 |
 | `docs/screenshots/clone_pull.png` | clone → push → pull 터미널 (1-7) | 보강 자료 | ⚠️ 미첨부 |
 
-> 캡처 후 위 경로에 넣고 커밋하면 이 표의 파일명을 그대로 링크로 바꿀 수 있습니다.
-> 아직 파일이 없으므로 **깨진 링크를 만들지 않기 위해 경로만 표기**했습니다.
+> 필수 7장은 모두 첨부했습니다. 파일명을 누르면 바로 열립니다.
+> 아래 2장은 미션 필수 항목이 아니며, `clone`/`pull` 실습 흔적은 커밋 [`3bf2517`](https://github.com/ellysuh22/2-homework/commit/3bf2517)과 [동기화 기록](#동기화-기록)으로 대신합니다.
 
 ---
 
