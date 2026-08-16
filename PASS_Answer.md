@@ -305,13 +305,13 @@ def default_quizzes():
 
 ### ✅ 답
 
-> **커밋 27개로, 요구 기준(10개)을 넘습니다. GitHub에 공개돼 있습니다.**
+> **커밋 28개 — 게임 개발 15개 + 문서·자료 13개입니다.** 요구 기준(10개)을 넘습니다.
 > 메시지는 전부 `Feat:` `Fix:` `Docs:` 처럼 **무엇을 했는지 드러나게** 적었습니다.
 
 ### 🖥️ 증빙
 
 ```bash
-git rev-list --count HEAD     # → 27
+git rev-list --count HEAD     # → 28
 git log --oneline | cat       # 전부 Feat:/Fix:/Docs:/Refactor:/Chore: 로 시작
 ```
 ```
