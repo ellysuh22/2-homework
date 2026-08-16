@@ -305,13 +305,13 @@ def default_quizzes():
 
 ### ✅ 답
 
-> **커밋 25개로, 요구 기준(10개)을 넘습니다. GitHub에 공개돼 있습니다.**
+> **커밋 27개로, 요구 기준(10개)을 넘습니다. GitHub에 공개돼 있습니다.**
 > 메시지는 전부 `Feat:` `Fix:` `Docs:` 처럼 **무엇을 했는지 드러나게** 적었습니다.
 
 ### 🖥️ 증빙
 
 ```bash
-git rev-list --count HEAD     # → 25
+git rev-list --count HEAD     # → 27
 git log --oneline | cat       # 전부 Feat:/Fix:/Docs:/Refactor:/Chore: 로 시작
 ```
 ```
@@ -436,10 +436,26 @@ feature/play-quiz ●───●─/     ← 여기서 실패해도 main은 무
 
 ### ✅ 답
 
-> **저장소를 다른 폴더에 clone → 거기서 README를 고쳐 push → 원래 폴더에서 pull 로 받아왔습니다.**
-> ⚠️ 다만 **터미널 스크린샷은 아직 없습니다.** 커밋만으로는 clone한 폴더에서 만든 건지 구분되지 않아 증거로 부족하다고 봅니다.
+> **`clone` → `pull` 을 실행한 터미널 화면을 캡처해 첨부했습니다.**
+> clone한 폴더에서 고쳐 push한 기록은 커밋 `3bf2517` 로 남아 있습니다.
 
 ### 🖥️ 증빙
+
+📸 **[clone_pull.png](docs/screenshots/clone_pull.png)** ← 이것 하나로 1-7이 끝납니다
+
+```
+% cd ~/Documents
+% git clone https://github.com/ellysuh22/2-homework.git test-clone   ← clone
+% cd test-clone
+% git pull                                                            ← pull
+Cloning into 'test-clone'...
+Receiving objects: 100% (108/108), 789.63 KiB | 4.59 MiB/s, done.
+Already up to date.
+ellysuh@... test-clone %                    ← ★ clone한 폴더 안에서 실행했다는 증거
+```
+
+👉 **짚을 곳** — 마지막 줄의 프롬프트가 `test-clone` 입니다.
+→ 커밋 기록만으로는 어느 폴더에서 했는지 구분이 안 되는데, **이 한 줄이 그걸 증명합니다.**
 
 ```bash
 git log --oneline -- README.md | cat
@@ -465,7 +481,7 @@ git log --oneline -- README.md | cat
 
 <a id="clone-pull-촬영"></a>
 
-### 🔴 평가 전 촬영 절차
+### ✅ 촬영 완료 — 재촬영이 필요할 때의 절차
 
 ⚠️ **먼저 로컬 변경사항을 커밋·푸시해 두세요.** 안 그러면 마지막 `pull`에서 충돌납니다.
 
@@ -487,7 +503,7 @@ cd ~/Documents/2-homework
 git pull
 ```
 
-> 📸 (1)~(3)이 한 화면에 보이게 캡처 → `./shot.sh clone_pull`
+> 📸 (1)~(3)이 한 화면에 보이게 캡처 → `./shot.sh clone_pull`  *(이미 촬영 완료)*
 > 끝나면 연습용 폴더 삭제: `rm -rf ~/Desktop/clone-test`
 
 ### 📚 학습 내용
@@ -1611,7 +1627,7 @@ grep -n "1-4\|range(1, 5)" main.py
 | [1-4](#q1-4) | 기본 퀴즈를 **함수로** 만들었다 — **변수면 삭제할 때 원본까지 줄어서** | 파일 치우고 실행 → 5개 |
 | [1-5](#q1-5) | 기능 하나 = 커밋 1개 — **되돌릴 수 있는 최소 단위라서** | `git rev-list --count HEAD` |
 | [1-6](#q1-6) | 위험한 기능만 브랜치로 — **실패해도 `main`을 지키려고** | `git show --stat 2d45928 \| head -3` |
-| [1-7](#q1-7) | 커밋은 있으나 **스크린샷 미첨부** ⚠️ | `git log --oneline -- README.md` |
+| [1-7](#q1-7) | clone→pull **터미널 캡처 첨부 완료** ✅ | `clone_pull.png` · `git log --oneline -- README.md` |
 
 ### [항목 2] 코드 구조 및 설계
 
@@ -1683,7 +1699,7 @@ python3.11 main.py < /dev/null               # 안전 종료 (Traceback 없음)
 | `score.png` | 점수 확인 | 1-1 | ✅ |
 | `git_graph.png` | 브랜치 그래프 | 1-6, 3-4 | ✅ |
 | `commit_list.png` | 커밋 목록 | 1-5, 2-5 | ✅ |
-| **`clone_pull.png`** | clone → push → pull | **1-7** | 🔴 **필요** |
+| **`clone_pull.png`** | clone → pull 터미널 | **1-7** | ✅ |
 | **`invalid_input.png`** | 잘못된 입력 4종 | **1-2** | 🟡 권장 |
 
 **촬영 방법**
@@ -1698,7 +1714,6 @@ python3.11 main.py < /dev/null               # 안전 종료 (Traceback 없음)
 | `Cmd` + `Shift` + `4` | 드래그한 **영역**만 캡처 |
 | `Cmd` + `Shift` + `4` → `Space` → 클릭 | **창 하나**를 통째로 |
 
-- **`clone_pull.png`** — [1-7의 촬영 절차](#clone-pull-촬영) 그대로
 - **`invalid_input.png`** — 실행 후 `선택:` 에서 연달아 `abc` → `0` → `9` → 그냥 Enter, ⚠️ 경고 4줄이 한 화면에 보이게
 
 ```bash
