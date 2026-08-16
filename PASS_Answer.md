@@ -524,6 +524,17 @@ feature/play-quiz ●───●─/     ← 여기서 실패해도 main은 무
 
 ### 🖥️ 증빙
 
+```bash
+git reflog --date=iso | head -2
+```
+```
+4b72aae HEAD@{2026-08-16 20:35:21 +0900}: pull: Fast-forward
+5e9cebd HEAD@{2026-08-16 18:45:44 +0900}: clone: from https://github.com/ellysuh22/2-homework.git
+```
+
+👉 clone과 pull 두 줄이 `.git/logs/HEAD` 에 남아 있습니다.
+→ `pull: Fast-forward` = 원격에서 **실제로 받아왔다**는 뜻입니다.
+
 📸 **[clone_pull.png](docs/screenshots/clone_pull.png)** ← 이것 하나로 1-7이 끝납니다
 
 ```
