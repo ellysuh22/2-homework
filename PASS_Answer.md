@@ -388,13 +388,13 @@ def default_quizzes():
 
 ### ✅ 답
 
-> **커밋 30개 — 게임 개발 15개 + 문서·자료 15개입니다.** 요구 기준(10개)을 넘습니다.
+> **커밋 30개 이상 — 게임 개발 15개 + 문서·자료 15개 이상입니다.** 요구 기준(10개)을 크게 넘습니다.
 > 메시지는 전부 `Feat:` `Fix:` `Docs:` 처럼 **무엇을 했는지 드러나게** 적었습니다.
 
 ### 🖥️ 증빙
 
 ```bash
-git rev-list --count HEAD     # → 30
+git rev-list --count HEAD     # → 30 이상
 git log --oneline | cat       # 전부 Feat:/Fix:/Docs:/Refactor:/Chore: 로 시작
 ```
 ```

@@ -30,7 +30,7 @@
 | Python 기본 문법으로 입출력 흐름 만들기 | 메뉴 반복 → 입력 검증 → 기능 실행 ([main.py:321-339](main.py#L321-L339)) |
 | 클래스(객체 지향)로 코드를 역할별로 구조화 | `Quiz`(문제 한 장) / `QuizGame`(게임 진행) 2개 클래스로 분리 |
 | JSON 파일 저장으로 **데이터 영속성** 경험 | 종료 후 재실행해도 퀴즈·최고 점수 유지 (`state.json`) |
-| Git으로 변경 이력 관리 | 커밋 30개(게임 15 + 문서 15), 브랜치 생성 → 병합, GitHub 공개 |
+| Git으로 변경 이력 관리 | 커밋 30개 이상(게임 15 + 문서 15개 이상), 브랜치 생성 → 병합, GitHub 공개 |
 
 > 💡 **데이터 영속성(persistence)** — 프로그램을 꺼도 데이터가 사라지지 않고 남아 있는 성질.
 > 변수는 프로그램이 끝나면 사라지므로, 파일에 적어두어야 다음 실행 때 이어서 쓸 수 있습니다.
@@ -371,7 +371,7 @@ except (KeyboardInterrupt, EOFError):
 ## 12. Git 커밋·브랜치·병합·clone·pull 수행 내용
 
 - **저장소**: https://github.com/ellysuh22/2-homework
-- **커밋 수**: 30개 — **게임 개발 15개 + 문서·자료 15개** (요구 기준 10개 이상)
+- **커밋 수**: **30개 이상** — 게임 개발 15개 + 문서·자료 15개 이상 (요구 기준 10개 이상)
 - **커밋 메시지 규칙**: `종류: 요약` — `Feat:` 새 기능 / `Fix:` 버그 수정 / `Docs:` 문서 / `Refactor:` 구조 정리 / `Chore:` 설정
 - **커밋 단위**: **기능 하나 완성 = 커밋 1개**. 그래야 `git log`가 개발 일기가 되고,
   문제가 생겼을 때 그 기능이 들어온 커밋으로 되돌아가 원인을 좁힐 수 있습니다.
@@ -407,12 +407,12 @@ $ git log --oneline --graph --all --decorate
 
 ### 전체 커밋 이력
 
-커밋 **30개**를 성격에 따라 둘로 나눴습니다. 전체 목록은 [GitHub 커밋 이력](https://github.com/ellysuh22/2-homework/commits/main)에서 볼 수 있습니다.
+커밋 **30개 이상**을 성격에 따라 둘로 나눴습니다. 전체 목록은 [GitHub 커밋 이력](https://github.com/ellysuh22/2-homework/commits/main)에서 볼 수 있습니다.
 
 | 구분 | 개수 | 무엇 |
 | --- | --- | --- |
 | **① 게임 개발** | **15개** | `main.py`를 만든 커밋 — 아래 표 |
-| **② 문서·자료** | **15개** | 코드는 안 건드리고 설명 문서·캡처만 정리 |
+| **② 문서·자료** | **15개 이상** | 코드는 안 건드리고 설명 문서·캡처만 정리 |
 
 #### ① 게임 개발 커밋 15개
 
@@ -434,7 +434,7 @@ $ git log --oneline --graph --all --decorate
 | 14 | [`c961ad8`](https://github.com/ellysuh22/2-homework/commit/c961ad8) | Fix: Ctrl+C와 입력 스트림 종료 시 안전하게 종료하도록 처리 | **2-4** |
 | 15 | [`035cbde`](https://github.com/ellysuh22/2-homework/commit/035cbde) | Refactor: QuizGame 입력 처리 정리 및 불필요한 분기 제거 | 2-2, 2-5 |
 
-#### ② 문서·자료 커밋 15개
+#### ② 문서·자료 커밋 15개 이상
 
 게임이 완성된 뒤, **평가자가 읽을 설명 자료**를 만든 커밋입니다. `main.py`의 동작은 바뀌지 않았습니다.
 
@@ -482,7 +482,7 @@ $ git log --oneline --graph --all --decorate
 | **1-2** | 정오답 판정 + 입력 오류 4종 | [`input_int()`](main.py#L166-L185) · [`Quiz.check()`](main.py#L50-L52) | [잘못된 입력 처리](#잘못된-입력-처리--실제-출력-결과) · 커밋 [`a79f908`](https://github.com/ellysuh22/2-homework/commit/a79f908) | ✅ 완료 |
 | **1-3** | 재실행 시 데이터 유지 | [`load_state()`](main.py#L132-L151) · [`save_state()`](main.py#L153-L164) | [저장 흐름](#9-실행부터-statejson-불러오기저장까지의-흐름) · 커밋 [`ff3840e`](https://github.com/ellysuh22/2-homework/commit/ff3840e) | ✅ 완료 |
 | **1-4** | 기본 퀴즈 5개 이상 | [`default_quizzes()`](main.py#L74-L107) — 5개 | [주제 선정 이유](#퀴즈-주제와-선정-이유) · 커밋 [`8adca1c`](https://github.com/ellysuh22/2-homework/commit/8adca1c) | ✅ 완료 |
-| **1-5** | GitHub 업로드 + 커밋 10개 이상 | — | [커밋 이력 30개](https://github.com/ellysuh22/2-homework/commits/main) · [README 커밋표](#전체-커밋-이력) | ✅ 완료 |
+| **1-5** | GitHub 업로드 + 커밋 10개 이상 | — | [커밋 이력 30개 이상](https://github.com/ellysuh22/2-homework/commits/main) · [README 커밋표](#전체-커밋-이력) | ✅ 완료 |
 | **1-6** | 브랜치·병합 기록 | — | [병합 커밋 `2d45928`](https://github.com/ellysuh22/2-homework/commit/2d45928) · [Network 그래프](https://github.com/ellysuh22/2-homework/network) · [README 브랜치 절](#브랜치와-병합) | ✅ 완료 |
 | **1-7** | clone·pull 실습 흔적 | — | [`clone_pull.png`](docs/screenshots/clone_pull.png) · 커밋 [`3bf2517`](https://github.com/ellysuh22/2-homework/commit/3bf2517) · [동기화 문구](#동기화-기록) | ✅ 완료 |
 
@@ -595,7 +595,7 @@ cd 2-homework
 
 # 1) 커밋 10개 이상 + 브랜치/병합 기록 (1-5, 1-6)
 git log --oneline --graph --all --decorate
-git rev-list --count HEAD          # → 30
+git rev-list --count HEAD          # → 30 이상
 
 # 2) 첫 실행: state.json이 없으므로 기본 퀴즈 5개로 시작 (1-4)
 python3 main.py
